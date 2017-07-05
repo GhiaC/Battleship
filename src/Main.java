@@ -1,6 +1,7 @@
+import veiw.MainFrame;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("hello");
-        System.out.println("chetori ya na");
+        MainFrame mainFrame = new MainFrame();
     }
 }
