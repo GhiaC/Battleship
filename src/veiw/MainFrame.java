@@ -11,11 +11,11 @@ public class MainFrame extends JFrame{
     {
         setSize(1000,700);
         setLocation(400,150);
-        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        // setResizable(false);
         mainPanel = new MainPanel();
         add(mainPanel);
+        setVisible(true);
     }
 
 }

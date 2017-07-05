@@ -9,16 +9,21 @@ import java.awt.*;
 public class MainPanel extends JPanel{
     ChatPanel chatPanel;
     StatusPanel statusPanel;
-    GameVeiwerPanel gameVeiwerPanel;
+    MenuBar menuBar;
+    GameViewerPanel gameVeiwerPanel;
     public MainPanel()
     {
-        setLayout(new BorderLayout());
+        setLayout(null);
+        setSize(1000,700);
         chatPanel = new ChatPanel();
-        gameVeiwerPanel = new GameVeiwerPanel();
+        gameVeiwerPanel = new GameViewerPanel();
         statusPanel = new StatusPanel();
-        setBackground(Color.BLUE);
-        add(chatPanel,BorderLayout.EAST);
-        add(statusPanel,BorderLayout.SOUTH);
+        menuBar = new MenuBar();
+        add(chatPanel);
+        add(statusPanel);
+        add(gameVeiwerPanel);
+        add(menuBar);
+        repaint();
     }
 
 
