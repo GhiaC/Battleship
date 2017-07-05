@@ -9,10 +9,13 @@ public class MainFrame extends JFrame{
     private MainPanel mainPanel;
     public MainFrame()
     {
-        setSize(500,500);
-        setLocation(400,400);
+        setSize(1000,700);
+        setLocation(400,150);
         setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       // setResizable(false);
         mainPanel = new MainPanel();
+        add(mainPanel);
     }
 
 }
