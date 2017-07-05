@@ -51,6 +51,12 @@ public class RequestLoginMessage extends BaseMessage {
 
     @Override
     public byte getMessageType() {
-        return 0;
+        return MessageTypes.REQUEST_LOGIN;
+    }
+    public String getmUsername(){
+        return mUsername;
+    }
+    public String getmPassword(){
+        return mPassword;
     }
 }
