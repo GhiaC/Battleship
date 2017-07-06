@@ -10,4 +10,15 @@ public class MessageTypes {
      * Code of request login message
      */
     public static final byte REQUEST_LOGIN =1;
+
+    /**
+     * data of movement
+     */
+    public static final byte MOVEMENT =2;
+    /**
+     * chat message
+     */
+    public static final byte CHAT =3;
+
+
 }
