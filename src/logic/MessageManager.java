@@ -25,13 +25,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
 
     private String data ; //IMPORTANT
 
-    private int head = 0 ;
-    private final int maxClient = 1000;
-
-    private Socket connection[] = new Socket[maxClient];
-    private ObjectOutputStream outputArr[] = new ObjectOutputStream[maxClient];
-    private ObjectInputStream inputArr[] = new ObjectInputStream[maxClient];
-
 
     /**
      * Instantiate server socket handler and start it. (Call this constructor in host mode)
