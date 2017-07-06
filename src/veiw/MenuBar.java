@@ -5,7 +5,7 @@ import javax.swing.*;
 /**
  * Created by mohsen on 7/5/17.
  */
-public class MenuBar extends JMenuBar {
+public class MenuBar extends JToolBar {
     JMenu fileMenu;
     JMenu helpMenu;
     JMenuItem fileMenuItem;

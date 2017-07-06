@@ -3,6 +3,11 @@ package veiw;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 
 /**
  * Created by mohsen on 7/5/17.
@@ -11,7 +16,13 @@ public class GamePanel extends JPanel {
     JLabel[][] gameField;
     public GamePanel()
     {
-
+        /*DropTarget dropTarget =new DropTarget(this, new DropTargetAdapter() {
+            @Override
+            public void drop(DropTargetDropEvent dropTargetDropEvent) {
+                dropTargetDropEvent.acceptDrop(DnDConstants.ACTION_REFERENCE);
+                //Object data = dropTargetDropEvent.getTransferable().getTransferData(DataFlavor.)
+            }
+        })*/
         gameField = new JLabel[10][10];
         setLayout(new GridLayout(10,10));
         setSize(300,300);

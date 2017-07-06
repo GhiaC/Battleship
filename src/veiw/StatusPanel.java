@@ -42,28 +42,28 @@ public class StatusPanel extends JPanel {
 
     }
     private void makeShipNumberLabel4() {
-        shipNumberLabel4 = new JLabel("*4");
+        shipNumberLabel4 = new JLabel("*1");
         shipNumberLabel4.setLocation(185,16);
         shipNumberLabel4.setSize(30,20);
         add(shipNumberLabel4);
     }
     private void makeShipNumberLabel3()
     {
-        shipNumberLabel3 = new JLabel("*3");
+        shipNumberLabel3 = new JLabel("*2");
         shipNumberLabel3.setLocation(185,50);
         shipNumberLabel3.setSize(30,20);
         add(shipNumberLabel3);
     }
     private void makeShipNumberLabel2()
     {
-        shipNumberLabel2 = new JLabel("*2");
+        shipNumberLabel2 = new JLabel("*3");
         shipNumberLabel2.setLocation(185,85);
         shipNumberLabel2.setSize(30,20);
         add(shipNumberLabel2);
     }
     private void makeShipNumberLabel1()
     {
-        shipNumberLabel1 = new JLabel("*1");
+        shipNumberLabel1 = new JLabel("*4");
         shipNumberLabel1.setLocation(185,120);
         shipNumberLabel1.setSize(30,20);
         add(shipNumberLabel1);
