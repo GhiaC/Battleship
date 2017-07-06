@@ -19,6 +19,9 @@ public class GamePanel extends JPanel {
             for(int j=0;j<10;j++)
             {
                 gameField[i][j] = new JLabel();
+                //if(i == 5 && j == 5)
+                 //   gameField[i][j].setBackground(Color.BLACK);
+                gameField[i][j].setOpaque(true);
                 gameField[i][j].setBackground(Color.gray);
                 gameField[i][j].setBorder(new LineBorder(Color.BLACK,1));
                 add(gameField[i][j]);
