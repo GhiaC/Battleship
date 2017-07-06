@@ -1,59 +1,78 @@
 package logic;
 
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.Queue;
 
-public class NetworkHandler extends Thread{
+public class NetworkHandler extends Thread {
     private TcpChannel mTcpChannel;
     private Queue<byte[]> mSendQueue;
     private Queue<byte[]> mReceivedQueue;
     private ReceivedMessageConsumer mConsumerThread;
 
-    public NetworkHandler(SocketAddress socketAddress,INetworkHandlerCallback inetWorkHandlerCallback){
+    private boolean queueEmpty = false;
 
-    }
-    public NetworkHandler(Socket socket, INetworkHandlerCallback iNetworkHandlerCallback ){
-
+    //k
+//    public NetworkHandler(SocketAddress socketAddress,INetworkHandlerCallback iNetworkHandlerCallback){
+//
+//    }
+    public NetworkHandler(Socket socket, INetworkHandlerCallback iNetworkHandlerCallback) {
+        mTcpChannel = new TcpChannel(socket, 10000);
     }
 
     /**
      * Add serialized bytes of message to the sendQueue
      */
-    public void sendMessage(BaseMessage baseMessage){
-
+    public void sendMessage(BaseMessage baseMessage) {
+        mSendQueue.add(baseMessage.getSerialized());
     }
+
     /**
      * while channel is connected and stop is not called :
      * if sendQueue is not empty,then poll a message and send it
      * else if readChannel() is returning bytes,then add it to receivedQueue.
      */
     @Override
-    public void run(){
+    public void run() {
+        try {
+            while (true) {
+                if (mTcpChannel.isConnected() && !queueEmpty) {
+                    for (int i = 0; i < mSendQueue.size(); i++) {
+                        mTcpChannel.write(mSendQueue.poll());
+                    }
 
+                    mReceivedQueue.add(readChannel());
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
      * Kill the thread and close the channel.
      */
-    public void stopSelf(){
-
+    public void stopSelf() {
+        queueEmpty = false;
     }
 
     /**
      * Try to read some bytes from the channel.
      */
-    public byte[] readChannel(){
-
-        return null;
+    public byte[] readChannel() {
+        byte[] bytes = mTcpChannel.read(4);
+        return bytes;
     }
-    private class ReceivedMessageConsumer extends Thread{
+
+    private class ReceivedMessageConsumer extends Thread {
 
         /**
-         * cm
+         * while channel is connected and stop is not called:
+         * if there exists message in receivedQueue, then create a message object
+         *      from appropriate class based and message type byte and pass it through onMessageReceived
+         * else if receivedQueue is empty, then sleep 100 ms
          */
         @Override
-        public void run(){
+        public void run() {
 
         }
     }

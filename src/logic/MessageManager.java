@@ -37,157 +37,24 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
      * Instantiate server socket handler and start it. (Call this constructor in host mode)
      */
     public MessageManager(int port){
-        try{
-            server = new ServerSocket(port, 100);
-            new Thread(() -> {
-                try {
-                    for (int i = head; i < maxClient; i++) {
-                        listen(i);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            //TODO select one connection
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * masoud's method
-     * server
-     */
-
-    private void listen(int i) {
-        try {
-            System.out.println("listen in "+i+" conection");
-            connection[i] = server.accept();
-            head++;
-            System.out.println("Connection " + (i + 1) + " received from : " + connection[i].getInetAddress().getHostName() + "\n");
-            getStreams(i);
-            processConnection(i);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private void getStreams(int conecNum) throws IOException {
-        outputArr[conecNum] = new ObjectOutputStream(connection[conecNum].getOutputStream());
-        outputArr[conecNum].flush();
-
-        inputArr[conecNum] = new ObjectInputStream(connection[conecNum].getInputStream());
-        System.out.println("server connection created");
+        mServerSocketHandler = new ServerSocketHandler(port,this,this);
 
     }
-    private void processConnection(int conecNum) throws IOException {
-        String message = "SERVER »> connection successful";
-        int i = conecNum;
-        outputArr[i].writeObject(message);
-        outputArr[i].flush();
-
-        new Thread(() -> {
-            try {
-                //TODO improve thi method
-                while (true){
-                    try {
-                        String data = "";
-                        outputArr[i].writeObject(data);
-                        outputArr[i].flush();
-                        data = (String) inputArr[i].readObject();
-
-                        System.out.println(data);
-                        // TODO parse data
-
-                        //TODO receive terminate recipe
-
-                    } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    private void closeConnectionServer() throws IOException {
-        System.out.println("User terminated connection");
-        for (int i = 0; i < head; i++) {
-            outputArr[i].close();
-            inputArr[i].close();
-            connection[i].close();
-        }
-    }
-
-    private void sendDataServer(BaseMessage data) {
-        for (int i = 0; i < head; i++) {
-            try {
-                outputArr[i].writeObject(data);
-                outputArr[i].flush();
-            } catch (IOException e) {
-                System.out.println("Error writing object");
-            }catch (Exception e){
-				System.out.println(e.getMessage());
-            }
-        }
-        System.out.println("SERVER>>>" + data);
-
-        //TODO receive terminate recipe
-    }
-
-    // second constructor
 
     public MessageManager(String ip, int port){
         this.ip = ip;
         this.port = port;
-
+        Socket socket = null;
         try {
-            connectToServer();
-
-            getStreams();
-
-            processConnection();
-
-            closeConnection();
-
-        }catch (EOFException eofException){
-            System.out.println("Server terminated connection");
-        }catch (IOException ioException){
-            ioException.printStackTrace();
+            socket = new Socket(ip, port); //server's ip and port
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        if(socket!=null){
+            mNetworkHandlerList.add(new NetworkHandler(socket,this ));
         }
     }
 
-    /**
-     * mMethod
-     * client connection
-     */
-    private void connectToServer() throws IOException{
-        System.out.println("Attempting connection\n");
-        client = new Socket(InetAddress.getByName(ip),port); //server's ip and port
-        System.out.println("Connected to : " + client.getInetAddress().getHostName());
-    }
-
-    private void getStreams() throws IOException {
-        output = new ObjectOutputStream(client.getOutputStream());
-        output.flush();
-        input = new ObjectInputStream(client.getInputStream());
-        System.out.println("created outPutStream");
-    }
-    private void processConnection() throws IOException{
-//        do {
-            try {
-                data = (String)input.readObject();
-                //TODO  : parse data and do that effect
-                System.out.println(data);//Test
-            } catch (ClassNotFoundException e) {
-                System.out.println("Unknown object type received");
-            }catch (Exception E){
-                System.out.println("ERROR in processConectrion method in messageManager Class");
-            }
-//        }while (!message.equals("SERVER>>> TERMINATE"));
-        //TODO receive terminate recipe
-    }
     private void closeConnection() throws IOException{
         System.out.println("Closing connection");
         output.close();
@@ -197,20 +64,21 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     }
 
     private void sendData(BaseMessage message){
-        try {
-            output.writeObject(message.getSerialized());
-            output.flush();
-            System.out.println("send data : "+ message);
-        }catch (IOException ioException){
-            System.out.println("Error writing object in messageManger class");
-        }
-        // TODO receive terminate recipe
+
     }
 
+    /**
+     * Add network handler to the list.
+     */
+    @Override
+    public void onNewConnectionReceived(NetworkHandler networkHandler){
+        mNetworkHandlerList.add(networkHandler);
+    }
 
+    @Override
+    public void onSocketClosed(){
 
-
-
+    }
 
     /**
      * IMPORTANT : Request Login is an example message and doesn't relate to this project!
@@ -229,13 +97,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
 
     }
 
-    /**
-     * Add network handler to the list.
-     */
-    @Override
-    public void onNewConnectionReceived(NetworkHandler networkHandler){
 
-    }
     /**
      * IMPORTANT : Request Login is an example message and doesn't relate to this project!
      * According to the message type of baseMessage, call corresponding method to use it.
@@ -249,8 +111,5 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         }
     }
 
-    @Override
-    public void onSocketClosed(){
 
-    }
 }
