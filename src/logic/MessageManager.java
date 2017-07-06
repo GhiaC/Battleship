@@ -1,5 +1,11 @@
 package logic;
 
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 
 public class MessageManager implements IServerHandlerCallback, INetworkHandlerCallback{
@@ -7,17 +13,101 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     private List<NetworkHandler> mNetworkHandlerList;
 
     /**
+     * mFields
+     */
+    private Socket client;
+    private String ip;
+    private int port;
+    private ObjectOutputStream output;
+    private ObjectInputStream input;
+
+    private String data ; //ImPORTANT
+
+    /**
      * Instantiate server socket handler and start it. (Call this constructor in host mode)
      */
-    public MessageManager(String ip, int port){
+    public MessageManager(int port){
 
     }
+    public MessageManager(String ip, int port){
+        this.ip = ip;
+        this.port = port;
+
+        try {
+            connectToServer();
+
+            getStreams();
+
+            processConnection();
+
+            closeConnection();
+
+        }catch (EOFException eofException){
+            System.out.println("Server terminated connection");
+        }catch (IOException ioException){
+            ioException.printStackTrace();
+        }
+    }
+
+    /**
+     * mMethod
+     * client connection
+     */
+    private void connectToServer() throws IOException{
+        System.out.println("Attempting connection\n");
+        client = new Socket(InetAddress.getByName(ip),port); //server's ip and port
+        System.out.println("Connected to : " + client.getInetAddress().getHostName());
+    }
+
+    private void getStreams() throws IOException {
+        output = new ObjectOutputStream(client.getOutputStream());
+        output.flush();
+        input = new ObjectInputStream(client.getInputStream());
+        System.out.println("created outPutStream");
+    }
+    private void processConnection() throws IOException{
+//        do {
+            try {
+                data = (String)input.readObject();
+                //TODO  : parse data and do that effect
+                System.out.println(data);//Test
+            } catch (ClassNotFoundException e) {
+                System.out.println("Unknown object type received");
+            }catch (Exception E){
+                System.out.println("ERROR in processConectrion method in messageManager Class");
+            }
+//        }while (!message.equals("SERVER>>> TERMINATE"));
+        //TODO receive terminate recipe
+    }
+    private void closeConnection() throws IOException{
+        System.out.println("Closing connection");
+        output.close();
+        input.close();
+        client.close();
+        // TODO show message
+    }
+
+    private void sendData(BaseMessage message){
+        try {
+            output.writeObject(message.getSerialized());
+            output.flush();
+            System.out.println("send data : "+ message);
+        }catch (IOException ioException){
+            System.out.println("Error writing object in messageManger class");
+        }
+        // TODO receive terminate recipe
+    }
+
+
+
+
 
     /**
      * IMPORTANT : Request Login is an example message and doesn't relate to this project!
      * Create a RequestLoginMessage object and sent it through the appropriate network handler.
+     * EDITED by masoud
      */
-    public void sendRequestLogin(String to,String username , String password ){
+    public void sendJoinRequest( ){
 
     }
     /**
@@ -27,7 +117,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     private void consumeRequestLogin(RequestLoginMessage message){
 
     }
-    
+
     /**
      * Add network handler to the list.
      */
