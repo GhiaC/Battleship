@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
@@ -16,19 +17,127 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
      * mFields
      */
     private Socket client;
+    private ServerSocket server;
     private String ip;
     private int port;
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
-    private String data ; //ImPORTANT
+    private String data ; //IMPORTANT
+
+    private int head = 0 ;
+    private final int maxClient = 1000;
+
+    private Socket connection[] = new Socket[maxClient];
+    private ObjectOutputStream outputArr[] = new ObjectOutputStream[maxClient];
+    private ObjectInputStream inputArr[] = new ObjectInputStream[maxClient];
+
 
     /**
      * Instantiate server socket handler and start it. (Call this constructor in host mode)
      */
     public MessageManager(int port){
+        try{
+            server = new ServerSocket(port, 100);
+            new Thread(() -> {
+                try {
+                    for (int i = head; i < maxClient; i++) {
+                        listen(i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            //TODO select one connection
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * masoud's method
+     * server
+     */
+
+    private void listen(int i) {
+        try {
+            System.out.println("listen in "+i+" conection");
+            connection[i] = server.accept();
+            head++;
+            System.out.println("Connection " + (i + 1) + " received from : " + connection[i].getInetAddress().getHostName() + "\n");
+            getStreams(i);
+            processConnection(i);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void getStreams(int conecNum) throws IOException {
+        outputArr[conecNum] = new ObjectOutputStream(connection[conecNum].getOutputStream());
+        outputArr[conecNum].flush();
+
+        inputArr[conecNum] = new ObjectInputStream(connection[conecNum].getInputStream());
+        System.out.println("server connection created");
 
     }
+    private void processConnection(int conecNum) throws IOException {
+        String message = "SERVER »> connection successful";
+        int i = conecNum;
+        outputArr[i].writeObject(message);
+        outputArr[i].flush();
+
+        new Thread(() -> {
+            try {
+                //TODO improve thi method
+                while (true){
+                    try {
+                        String data = "";
+                        outputArr[i].writeObject(data);
+                        outputArr[i].flush();
+                        data = (String) inputArr[i].readObject();
+
+                        System.out.println(data);
+                        // TODO parse data
+
+                        //TODO receive terminate recipe
+
+                    } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void closeConnectionServer() throws IOException {
+        System.out.println("User terminated connection");
+        for (int i = 0; i < head; i++) {
+            outputArr[i].close();
+            inputArr[i].close();
+            connection[i].close();
+        }
+    }
+
+    private void sendDataServer(BaseMessage data) {
+        for (int i = 0; i < head; i++) {
+            try {
+                outputArr[i].writeObject(data);
+                outputArr[i].flush();
+            } catch (IOException e) {
+                System.out.println("Error writing object");
+            }catch (Exception e){
+				System.out.println(e.getMessage());
+            }
+        }
+        System.out.println("SERVER>>>" + data);
+
+        //TODO receive terminate recipe
+    }
+
+    // second constructor
+
     public MessageManager(String ip, int port){
         this.ip = ip;
         this.port = port;
@@ -102,13 +211,15 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
 
 
 
+
     /**
      * IMPORTANT : Request Login is an example message and doesn't relate to this project!
      * Create a RequestLoginMessage object and sent it through the appropriate network handler.
      * EDITED by masoud
      */
-    public void sendJoinRequest( ){
+    public void sendJoinRequest(){
 
+//        sendData();
     }
     /**
      * IMPORTANT : Request Login is an example message and doesn't relate to this project!
