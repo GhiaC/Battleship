@@ -28,6 +28,7 @@ public class ChatPanel extends JPanel{
         setSize(300,700);
         setLayout(null);
         setOpaque(false);
+        setBorder(new LineBorder(Color.BLACK,1));
         chatHandler = new ChatHandler();
         textField = new JTextField("Type here...");
         textField.setSize(230,50);
