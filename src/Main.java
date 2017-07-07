@@ -9,10 +9,10 @@ public class Main {
     public static void main(String[] args) {
         MessageManager messageManager=null;
         MainFrame mainFrame = new MainFrame();
-        if(true){
+        if(false){
             messageManager = new MessageManager(9999);
         }
-        if(false) {
+        if(true) {
             messageManager = new MessageManager("192.168.43.215",9999);
         }
         while (true){

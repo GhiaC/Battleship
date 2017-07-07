@@ -1,5 +1,6 @@
 package logic;
 
+import sun.nio.ch.Net;
 import tools.ChatHandler;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
      */
     public MessageManager(int port){
         mServerSocketHandler = new ServerSocketHandler(port,this,this);
+        mServerSocketHandler.start();
     }
 
     public MessageManager(String ip, int port){
@@ -28,7 +30,9 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
             System.out.println(e.getMessage());
         }
         if(socket!=null){
-            mNetworkHandlerList.add(new NetworkHandler(socket,this ));
+            NetworkHandler networkHandler = new NetworkHandler(socket,this );
+            mNetworkHandlerList.add(networkHandler);
+            networkHandler.start();
         }
     }
 
@@ -44,6 +48,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     public void sendData(BaseMessage message) {
 //        System.out.println(mNetworkHandlerList.size());
         if(mNetworkHandlerList.size() > 0) {
+            System.out.println(mNetworkHandlerList.size());
             for (int i = 0; i < mNetworkHandlerList.size(); i++) {
                 mNetworkHandlerList.get(i).sendMessage(message);
             }
