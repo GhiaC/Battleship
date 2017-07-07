@@ -41,6 +41,7 @@ public class ChatPanel extends JPanel{
         add(chatViewerPanel);
         add(sendButton);
         setSendButtonActionListener();
+        setTextFieldActionListener();
     }
     public void createNameLabel(String s) {
         nameLabel = new JLabel("chat to " + s);
@@ -55,20 +56,26 @@ public class ChatPanel extends JPanel{
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                if(keyEvent.getKeyChar() == )
+                if(keyEvent.getKeyChar() == '\n')
+                    writeMassage();
+
             }
         });
+    }
+    private void writeMassage()
+    {
+        chatHandler.writeMessage("ali",textField.getText());
+        textField.setText("");
+        repaint();
+        revalidate();
+
     }
     private void setSendButtonActionListener()
     {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                chatHandler.writeMessage("ali",textField.getText());
-                textField.setText("");
-                repaint();
-                revalidate();
-                System.out.println("D");
+                writeMassage();
             }
         });
     }
