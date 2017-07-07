@@ -9,11 +9,11 @@ public class Main {
     public static void main(String[] args) {
         MessageManager messageManager=null;
         MainFrame mainFrame = new MainFrame();
-        if(false){
+        if(true){
             messageManager = new MessageManager(9999);
         }
         if(false) {
-            messageManager = new MessageManager("172.24.66.15",9999);
+            messageManager = new MessageManager("192.168.43.215",9999);
         }
         while (true){
             messageManager.sendData(new ChatMessage("hi"));

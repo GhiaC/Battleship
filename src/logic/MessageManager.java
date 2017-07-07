@@ -4,11 +4,12 @@ import tools.ChatHandler;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageManager implements IServerHandlerCallback, INetworkHandlerCallback{
     private ServerSocketHandler mServerSocketHandler;
-    private List<NetworkHandler> mNetworkHandlerList;
+    private List<NetworkHandler> mNetworkHandlerList = new ArrayList<>();
 
 
 
@@ -41,8 +42,11 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
 
     @Override
     public void sendData(BaseMessage message) {
-        for (int i = 0; i < mNetworkHandlerList.size(); i++) {
-            mNetworkHandlerList.get(i).sendMessage(message);
+//        System.out.println(mNetworkHandlerList.size());
+        if(mNetworkHandlerList.size() > 0) {
+            for (int i = 0; i < mNetworkHandlerList.size(); i++) {
+                mNetworkHandlerList.get(i).sendMessage(message);
+            }
         }
     }
 
