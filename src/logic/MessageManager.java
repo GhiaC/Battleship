@@ -1,11 +1,8 @@
 package logic;
 
-import java.io.EOFException;
+import tools.ChatHandler;
+
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
@@ -13,17 +10,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     private ServerSocketHandler mServerSocketHandler;
     private List<NetworkHandler> mNetworkHandlerList;
 
-    /**
-     * mFields
-     */
-    private Socket client;
-    private ServerSocket server;
-    private String ip;
-    private int port;
-    private ObjectOutputStream output;
-    private ObjectInputStream input;
-
-    private String data ; //IMPORTANT
 
 
     /**
@@ -31,12 +17,9 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
      */
     public MessageManager(int port){
         mServerSocketHandler = new ServerSocketHandler(port,this,this);
-
     }
 
     public MessageManager(String ip, int port){
-        this.ip = ip;
-        this.port = port;
         Socket socket = null;
         try {
             socket = new Socket(ip, port); //server's ip and port
@@ -50,14 +33,17 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
 
     private void closeConnection() throws IOException{
         System.out.println("Closing connection");
-        output.close();
-        input.close();
-        client.close();
+//        output.close();
+//        input.close();
+//        client.close();
         // TODO show message
     }
 
-    private void sendData(BaseMessage message){
-
+    @Override
+    public void sendData(BaseMessage message) {
+        for (int i = 0; i < mNetworkHandlerList.size(); i++) {
+            mNetworkHandlerList.get(i).sendMessage(message);
+        }
     }
 
     /**
@@ -73,22 +59,22 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
 
     }
 
-    /**
-     * IMPORTANT : Request Login is an example message and doesn't relate to this project!
-     * Create a RequestLoginMessage object and sent it through the appropriate network handler.
-     * EDITED by masoud
-     */
-    public void sendJoinRequest(){
-
-//        sendData();
-    }
-    /**
-     * IMPORTANT : Request Login is an example message and doesn't relate to this project!
-     * Use the message.
-     */
-    private void consumeRequestLogin(RequestLoginMessage message){
-
-    }
+//    /**
+//     * IMPORTANT : Request Login is an example message and doesn't relate to this project!
+//     * Create a RequestLoginMessage object and sent it through the appropriate network handler.
+//     * EDITED by masoud
+//     */
+//    public void sendJoinRequest(){
+//
+////        sendData();
+//    }
+//    /**
+//     * IMPORTANT : Request Login is an example message and doesn't relate to this project!
+//     * Use the message.
+//     */
+//    private void consumeRequestLogin(RequestLoginMessage message){
+//
+//    }
 
 
     /**
@@ -97,11 +83,13 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
      */
     @Override
     public void onMessageReceived(BaseMessage baseMessage){
-        switch (baseMessage.getMessageType()){
-            case MessageTypes.REQUEST_LOGIN:
-                consumeRequestLogin((RequestLoginMessage) baseMessage);
-                break;
-        }
+        ChatHandler chatHandler = new ChatHandler();
+        chatHandler.writeMessage("test",((ChatMessage) baseMessage).getTextChat());
+//        switch (baseMessage.getMessageType()){
+//            case MessageTypes.REQUEST_LOGIN:
+//                consumeRequestLogin((RequestLoginMessage) baseMessage);
+//                break;
+//        }
     }
 
 

@@ -1,5 +1,7 @@
 package logic;
 
+import tools.ChatHandler;
+
 import java.net.Socket;
 import java.util.Queue;
 
@@ -8,7 +10,7 @@ public class NetworkHandler extends Thread {
     private Queue<byte[]> mSendQueue;
     private Queue<byte[]> mReceivedQueue;
     private ReceivedMessageConsumer mConsumerThread;
-
+    protected INetworkHandlerCallback iNetworkHandlerCallback;
     private boolean queueEmpty = false;
 
     //k
@@ -17,6 +19,7 @@ public class NetworkHandler extends Thread {
 //    }
     public NetworkHandler(Socket socket, INetworkHandlerCallback iNetworkHandlerCallback) {
         mTcpChannel = new TcpChannel(socket, 10000);
+        this.iNetworkHandlerCallback = iNetworkHandlerCallback;
     }
 
     /**
@@ -73,6 +76,13 @@ public class NetworkHandler extends Thread {
          */
         @Override
         public void run() {
+            if(mReceivedQueue.size() > 0){
+                for (int i = 0; i < mReceivedQueue.size(); i++) {
+                    byte [] bytes =mReceivedQueue.poll();
+                    ChatMessage chatMessage = new ChatMessage(bytes);
+                    iNetworkHandlerCallback.onMessageReceived(chatMessage);
+                }
+            }
 
         }
     }
