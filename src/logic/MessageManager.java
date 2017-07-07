@@ -92,6 +92,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
      */
     @Override
     public void onMessageReceived(BaseMessage baseMessage){
+        System.out.println(333);
         ChatHandler chatHandler = new ChatHandler();
         chatHandler.writeMessage("test",((ChatMessage) baseMessage).getTextChat());
 //        switch (baseMessage.getMessageType()){

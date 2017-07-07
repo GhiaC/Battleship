@@ -9,7 +9,7 @@ public class NetworkHandler extends Thread {
     private TcpChannel mTcpChannel;
     private Queue<byte[]> mSendQueue;
     private Queue<byte[]> mReceivedQueue;
-    private ReceivedMessageConsumer mConsumerThread;
+    private ReceivedMessageConsumer mConsumerThread=new ReceivedMessageConsumer();
     protected INetworkHandlerCallback iNetworkHandlerCallback;
     private boolean queueEmpty = false;
 
@@ -20,6 +20,7 @@ public class NetworkHandler extends Thread {
     public NetworkHandler(Socket socket, INetworkHandlerCallback iNetworkHandlerCallback) {
         mTcpChannel = new TcpChannel(socket, 10000);
         this.iNetworkHandlerCallback = iNetworkHandlerCallback;
+
     }
 
     /**
@@ -36,14 +37,18 @@ public class NetworkHandler extends Thread {
      */
     @Override
     public void run() {
+
         try {
             while (true) {
-                if (mTcpChannel.isConnected() && !queueEmpty) {
-                    for (int i = 0; i < mSendQueue.size(); i++) {
-                        mTcpChannel.write(mSendQueue.poll());
-                    }
-
+                if (mTcpChannel.isConnected()) {
+//                    for (int i = 0; i < mSendQueue.size(); i++) {
+//                        mTcpChannel.write(mSendQueue.poll());
+//                    }
+                    System.out.println(mTcpChannel.isConnected());
                     mReceivedQueue.add(readChannel());
+                    if(mReceivedQueue.size() > 0){
+                        mConsumerThread.start();
+                    }
                 }
             }
         }catch (Exception e){
@@ -76,6 +81,7 @@ public class NetworkHandler extends Thread {
          */
         @Override
         public void run() {
+            System.out.println("received started");
             if(mReceivedQueue.size() > 0){
                 for (int i = 0; i < mReceivedQueue.size(); i++) {
                     byte [] bytes =mReceivedQueue.poll();

@@ -15,9 +15,9 @@ public class Main {
         if(true) {
             messageManager = new MessageManager("192.168.43.215",9999);
         }
-        while (true){
-            messageManager.sendData(new ChatMessage("hi"));
-        }
+//        while (true){
+//            messageManager.sendData(new ChatMessage("hi"));
+//        }
 
     }
 }

@@ -34,6 +34,7 @@ public class TcpChannel {
     public byte[] read(final int count){
         byte[] bytes = new byte[count];
         try {
+            System.out.println("read in tcpChannel");
             mInputStream.read(bytes);
             //TODO  : parse data and do that effect
             System.out.println("read");//Test
