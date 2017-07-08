@@ -22,13 +22,13 @@ public class Main {
             messageManager = new MessageManager(9999);
         }
         if(!b) {
-            messageManager = new MessageManager("127.0.0.1",9999);
+            messageManager = new MessageManager("192.168.43.215",9999);
         }
         new MessageManagerHandler(messageManager);
 
-  //      MainFrame mainFrame = new MainFrame();
+        MainFrame mainFrame = new MainFrame();
  //       LoginFrame loginFrame = new LoginFrame();
-       WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
+//       WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
   //      GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
     }
 }

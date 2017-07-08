@@ -20,5 +20,10 @@ public class GameViewerPanel extends JPanel {
         setLayout(new BorderLayout());
         add(gamePanel,BorderLayout.CENTER);
     }
+    public void printField(PlayerField playerField)
+    {
+        gamePanel.printField();
+
+    }
 
 }

@@ -23,5 +23,10 @@ public class MainFrame extends JFrame{
         setJMenuBar(menuBar);
         setVisible(true);
     }
+    public void printField(PlayerField playerField)
+    {
+        mainPanel.printField(playerField);
+
+    }
 
 }

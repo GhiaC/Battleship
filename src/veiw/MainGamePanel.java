@@ -23,4 +23,9 @@ public class MainGamePanel extends JPanel {
         setSize(700,550);
         setLocation(0,0);
     }
+    public void printField(PlayerField playerField)
+    {
+        gamePanel.printField(playerField);
+    }
+
 }

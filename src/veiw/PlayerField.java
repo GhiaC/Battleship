@@ -9,6 +9,16 @@ public class PlayerField {
     private boolean[][] mark;
     private int[] dx;
     private int[] dy;
+    public boolean isChangeTurn(int i,int j)
+    {
+        if(fired[i][j])
+            return false;
+        else if(ships[i][j])
+            return false;
+        else
+            return true;
+
+    }
     public PlayerField()
     {
         ships = new boolean[10][10];

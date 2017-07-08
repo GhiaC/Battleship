@@ -102,4 +102,8 @@ public class GamePanel extends JPanel {
             }
         });
     }
+    public void printField()
+    {
+
+    }
 }
