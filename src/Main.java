@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         MessageManager messageManager=null;
         boolean b = true;
-        b =!b;
+//        b =!b;
         if(b){
             messageManager = new MessageManager(9999);
         }
