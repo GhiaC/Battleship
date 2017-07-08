@@ -1,5 +1,6 @@
 package veiw;
 
+import com.sun.org.apache.xml.internal.resolver.readers.ExtendedXMLCatalogReader;
 import sun.awt.ExtendedKeyCodes;
 import tools.ChatHandler;
 import tools.MessageManagerHandler;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Executable;
 
 /**
  * Created by mohsen on 7/5/17.
@@ -45,6 +47,7 @@ public class ChatPanel extends JPanel{
         add(sendButton);
         setSendButtonActionListener();
         setTextFieldActionListener();
+        new rePaint(this);
     }
     public void createNameLabel(String s) {
         nameLabel = new JLabel("chat to " + s);
@@ -67,13 +70,31 @@ public class ChatPanel extends JPanel{
     }
     private void writeMassage()
     {
-        chatHandler.writeMessage("ali",textField.getText());
+        chatHandler.writeMessage("ali ",textField.getText());
         MessageManagerHandler messageManagerHandler=new MessageManagerHandler();
-        messageManagerHandler.sendData(new logic.ChatMessage("QQQQQQQQQ"));
+        messageManagerHandler.sendData(new logic.ChatMessage(textField.getText()));
         textField.setText("");
         repaint();
         revalidate();
+    }
+    private class rePaint extends Thread{
+        JPanel jPanel;
+        public rePaint(JPanel jPanel) {
+            this.jPanel=jPanel;
+            start();
+        }
 
+        @Override
+        public void run() {
+            try{
+                while (true){
+                    this.jPanel.revalidate();
+                    Thread.sleep(10);
+                }
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
     }
     private void setSendButtonActionListener()
     {

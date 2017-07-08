@@ -1,14 +1,8 @@
 package logic;
 
-//import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import tools.ChatHandler;
-
-import java.lang.reflect.Executable;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class NetworkHandler extends Thread {
     private TcpChannel mTcpChannel;
@@ -25,12 +19,14 @@ public class NetworkHandler extends Thread {
     public NetworkHandler(Socket socket, INetworkHandlerCallback iNetworkHandlerCallback) {
         this.iNetworkHandlerCallback = iNetworkHandlerCallback;
         mTcpChannel = new TcpChannel(socket, 10000);
-        mSendQueue = new ArrayList<byte[]>();
-        mReceivedQueue = new ArrayList<byte[]>();
+        mSendQueue = new ArrayList<>();
+        mReceivedQueue = new ArrayList<>();
         mSendQueue.clear();
         mReceivedQueue.clear();
         mConsumerThread = new ReceivedMessageConsumer();
         mConsumerThread.start();
+        new Sender();
+        new Receiver();
     }
 
     /**
@@ -38,39 +34,43 @@ public class NetworkHandler extends Thread {
      */
     public void sendMessage(BaseMessage baseMessage) {
         try {
-            ChatMessage chatMessage = new ChatMessage("EEEEEEEEEE");
-            mSendQueue.add(chatMessage.getSerialized());
-            System.out.println("added in queue");
+            mSendQueue.add(baseMessage.getSerialized());
+            System.out.println("in sendMessage method :" + ((ChatMessage) baseMessage).getTextChat());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    /**
-     * while channel is connected and stop is not called :
-     * if sendQueue is not empty,then poll a message and send it
-     * else if readChannel() is returning bytes,then add it to receivedQueue.
-     */
-    @Override
-    public void run() {
-        System.out.println("networkHandler Started");
-        ChatMessage chatMessage = new ChatMessage("CCCCCCCC");
-        while (mTcpChannel.isConnected() && !Thread.currentThread().isInterrupted()) {
-            if (!mSendQueue.isEmpty()) {
-                mTcpChannel.write(mSendQueue.get(0));
-                mSendQueue.remove(0);
-            } else {
-                byte[] bytes = readChannel();
-                if (bytes != null)
-                    mReceivedQueue.add(chatMessage.getSerialized());
-//                try {
-//                    sleep(10);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-            }
-        }
+    private int sizeOfMessage() {
+        return ByteBuffer.wrap(mTcpChannel.read(4)).getInt();
     }
+//    /**
+//     * while channel is connected and stop is not called :
+//     * if sendQueue is not empty,then poll a message and send it
+//     * else if readChannel() is returning bytes,then add it to receivedQueue.
+//     */
+//    @Override
+//    public void run() {
+//        System.out.println("networkHandler started");
+//        try {
+//            while (mTcpChannel.isConnected()) {
+//                System.out.println(mSendQueue.isEmpty());
+//                if (!mSendQueue.isEmpty()) {
+//                    mTcpChannel.write(mSendQueue.get(0));
+//                    mSendQueue.remove(0);
+//                } else {
+//                    System.out.println("before read");
+//                    byte[] bytes = readChannel();
+//                    System.out.println("after read");
+//                    if (bytes != null) {
+//                        mReceivedQueue.add(bytes);
+//                    }
+//                }
+//            }
+//        }catch (Exception e){
+//            System.out.println("Error in rn method of networkHandler");
+//        }
+//    }
 
     /**
      * Kill the thread and close the channel.
@@ -83,8 +83,61 @@ public class NetworkHandler extends Thread {
      * Try to read some bytes from the channel.
      */
     public byte[] readChannel() {
-        byte[] bytes = mTcpChannel.read(100);
+        int size = sizeOfMessage();
+        byte[] bytes = mTcpChannel.read(size - 4);
         return bytes;
+    }
+
+    private class Sender extends Thread {
+        public Sender() {
+            start();
+        }
+
+        @Override
+        public void run() {
+            try {
+                while (mTcpChannel.isConnected()) {
+                    if (!mSendQueue.isEmpty()) {
+                        mTcpChannel.write(mSendQueue.get(0));
+                        mSendQueue.remove(0);
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error in method of networkHandler");
+            }
+        }
+    }
+
+    private class Receiver extends Thread {
+        public Receiver() {
+            start();
+        }
+
+        @Override
+        public void run() {
+            try {
+                while (mTcpChannel.isConnected()) {
+                    System.out.println("before read");
+                    byte[] bytes = readChannel();
+                    System.out.println("after read");
+                    if (bytes != null) {
+                        mReceivedQueue.add(bytes);
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error in method of networkHandler");
+            }
+        }
     }
 
     private class ReceivedMessageConsumer extends Thread {
@@ -99,11 +152,11 @@ public class NetworkHandler extends Thread {
         public void run() {
             try {
                 while (mTcpChannel.isConnected()) {
-                    if (mReceivedQueue.size() > 0) {
-                        System.out.println("received in ReceivedMessageConsumer");
+                    if (!mReceivedQueue.isEmpty()) {
                         byte[] bytes = mReceivedQueue.get(0);
                         mReceivedQueue.remove(0);
                         ChatMessage chatMessage = new ChatMessage(bytes);
+                        System.out.println("message received");
                         iNetworkHandlerCallback.onMessageReceived(chatMessage);
                     } else {
                         try {

@@ -1,15 +1,13 @@
 package logic;
 
-import javax.sound.midi.Soundbank;
 import java.io.*;
-import java.lang.reflect.Executable;
 import java.net.Socket;
-import java.net.SocketAddress;
 
 public class TcpChannel {
     private Socket mSocket;
     private OutputStream mOutputStream;
     private InputStream mInputStream;
+
 
 //    public TcpChannel(SocketAddress socketAddress,int timeout){
 //
@@ -18,9 +16,9 @@ public class TcpChannel {
     public TcpChannel(Socket socket,int timeout){
         mSocket = socket;
         try {
-            socket.setSoTimeout(timeout);
-            mOutputStream = new ObjectOutputStream(mSocket.getOutputStream());
-            mInputStream = new ObjectInputStream(mSocket.getInputStream());
+//            socket.setSoTimeout(timeout);
+            mOutputStream = mSocket.getOutputStream();
+            mInputStream = mSocket.getInputStream();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -30,13 +28,13 @@ public class TcpChannel {
      * Try to read specific count from input stream
      */
     public byte[] read(final int count){
-        byte[] bytes = new byte[100];
+        byte[] bytes = new byte[count];
         try {
-            if(mInputStream.read(bytes) ==-1 && mSocket.isConnected()) {
+            if(mSocket.isConnected() && mInputStream.read(bytes) !=-1) {
                 return bytes;
             }
-        }catch (Exception E){
-            System.out.println("ERROR in read method in tcpChannel Class");
+        }catch (IOException E){
+            E.printStackTrace();
         }
         return null;
     }
@@ -45,10 +43,9 @@ public class TcpChannel {
      * Write bytes on output stream
      */
     public void write(byte[] data){
+        System.out.println("writing");
         try {
             mOutputStream.write(data);
-            mOutputStream.flush();
-            System.out.println("sended data");
         }catch (IOException ioException){
             System.out.println("Error writing object in messageManger class");
         }

@@ -30,8 +30,8 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         }
         if(socket!=null){
             NetworkHandler networkHandler = new NetworkHandler(socket,this );
-            networkHandler.start();
             mNetworkHandlerList.add(networkHandler);
+//            networkHandler.start();
         }
     }
 
@@ -47,7 +47,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     public void sendData(BaseMessage message) {
         if(mNetworkHandlerList.size() > 0) {
             for (int i = 0; i < mNetworkHandlerList.size(); i++) {
-                mNetworkHandlerList.get(i).sendMessage(new ChatMessage("HIIIIIIIII"));
+                mNetworkHandlerList.get(i).sendMessage(message);
             }
         }
     }
@@ -57,9 +57,8 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
      */
     @Override
     public void onNewConnectionReceived(NetworkHandler networkHandler){
-        networkHandler.start();
         mNetworkHandlerList.add(networkHandler);
-        sendData(new ChatMessage("WWWWWWW"));
+//        networkHandler.start();
     }
 
     @Override
@@ -69,7 +68,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
 
     @Override
     public void onMessageReceived(BaseMessage baseMessage){
-        baseMessage = new ChatMessage("onMessageReceived");
         if(((ChatMessage) baseMessage).getTextChat() != null) {
             ChatHandler chatHandler = new ChatHandler();
             chatHandler.writeMessage("test ", ((ChatMessage) baseMessage).getTextChat());
