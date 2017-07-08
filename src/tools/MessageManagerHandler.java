@@ -1,7 +1,5 @@
 package tools;
 
-import logic.BaseMessage;
-import logic.Message.RequestLoginMessage;
 import logic.MessageManager;
 
 public class MessageManagerHandler {
@@ -11,16 +9,17 @@ public class MessageManagerHandler {
         MessageManagerHandler.messageManager = messageManager;
     }
 
-    public static void sendData(BaseMessage baseMessage){
-        MessageManagerHandler.messageManager.sendData(baseMessage);
+    public static void sendMessage(String message){
+        MessageManagerHandler.messageManager.sendMessage(message);
     }
     public static void sendRequestLogin(String name){
-//        MessageManagerHandler.messageManager.sendRequestLogin(new RequestLoginMessage(name));
+        MessageManagerHandler.messageManager.sendRequestLogin(name);
     }
     public static void sendPointAttack(int x ,int y){
-
+        MessageManagerHandler.messageManager.sendPointAttack(x,y);
     }
-//    public static boolean isAccept(){
-//        return true;
-//    }
+    public static void Accept(int enemyNum){
+        MessageManagerHandler.messageManager.Accept(enemyNum);
+    }
+
 }
