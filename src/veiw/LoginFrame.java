@@ -153,6 +153,7 @@ public class LoginFrame extends JFrame{
                     new MessageManagerHandler(new MessageManager(Integer.parseInt(portField.getText())));
                 }
                 MainFrame mainFrame = new MainFrame();
+                setVisible(false);
             }
         });
     }
