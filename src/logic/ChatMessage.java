@@ -7,9 +7,11 @@ public class ChatMessage extends BaseMessage {
 
     public ChatMessage(String textChat) {
         this.textChat = textChat;
+        serialize();
     }
     public ChatMessage(byte [] mSerialized) {
         this.mSerialized = mSerialized;
+        deserialize();
     }
 
     @Override

@@ -2,6 +2,7 @@ package veiw;
 
 import sun.awt.ExtendedKeyCodes;
 import tools.ChatHandler;
+import tools.MessageManagerHandler;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -65,6 +66,8 @@ public class ChatPanel extends JPanel{
     private void writeMassage()
     {
         chatHandler.writeMessage("ali",textField.getText());
+        MessageManagerHandler messageManagerHandler=new MessageManagerHandler();
+        messageManagerHandler.sendData(new logic.ChatMessage("QQQQQQQQQ"));
         textField.setText("");
         repaint();
         revalidate();

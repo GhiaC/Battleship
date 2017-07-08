@@ -11,7 +11,6 @@ public class TcpChannel {
     private OutputStream mOutputStream;
     private InputStream mInputStream;
 
-    // k
 //    public TcpChannel(SocketAddress socketAddress,int timeout){
 //
 //    }
@@ -19,9 +18,8 @@ public class TcpChannel {
     public TcpChannel(Socket socket,int timeout){
         mSocket = socket;
         try {
+            socket.setSoTimeout(timeout);
             mOutputStream = new ObjectOutputStream(mSocket.getOutputStream());
-            mOutputStream.flush();
-
             mInputStream = new ObjectInputStream(mSocket.getInputStream());
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -32,16 +30,15 @@ public class TcpChannel {
      * Try to read specific count from input stream
      */
     public byte[] read(final int count){
-        byte[] bytes = new byte[count];
+        byte[] bytes = new byte[100];
         try {
-            System.out.println("read in tcpChannel");
-            mInputStream.read(bytes);
-            //TODO  : parse data and do that effect
-            System.out.println("read");//Test
+            if(mInputStream.read(bytes) ==-1 && mSocket.isConnected()) {
+                return bytes;
+            }
         }catch (Exception E){
-            System.out.println("ERROR in ProcessConnection method in tcpChannel Class");
+            System.out.println("ERROR in read method in tcpChannel Class");
         }
-        return bytes;
+        return null;
     }
 
     /**

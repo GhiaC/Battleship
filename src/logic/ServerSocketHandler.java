@@ -8,35 +8,44 @@ public class ServerSocketHandler extends Thread {
     private IServerHandlerCallback iServerHandlerCallback;
     private INetworkHandlerCallback iNetworkHandlerCallback;
     private int port;
+    private ServerSocket server;
 
     public ServerSocketHandler(int port, INetworkHandlerCallback iNetworkHandlerCallback,
                                IServerHandlerCallback iServerSocketHandlerCallback) {
         this.iNetworkHandlerCallback = iNetworkHandlerCallback;
         this.iServerHandlerCallback = iServerSocketHandlerCallback;
         this.port = port;
-    }
-
-    /**
-     * long cm
-     */
-    @Override
-    public void run() {
-        ServerSocket server = null;
+        server = null;
         try {
-            server = new ServerSocket(port, 10000); //server's ip and port
+            server = new ServerSocket(port, 100); //server's ip and port
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        if (server != null) {
+    }
+
+    /**
+     * while server socket is connected and stop is not called
+     * if a connection receives , then create a network handler and pass it through onNewConnectionReceived
+     * else sleep for 100ms
+     */
+    @Override
+    public void run() {
+
+        if (!server.isClosed() && !Thread.currentThread().isInterrupted()) {
             try {
-                while (true) {
+                while (!server.isClosed()) {
+                    System.out.println(1111);
                     Socket s = server.accept();
-                    NetworkHandler network = new NetworkHandler(s,iNetworkHandlerCallback);
+                    NetworkHandler network = new NetworkHandler(s, iNetworkHandlerCallback);
                     this.iServerHandlerCallback.onNewConnectionReceived(network);
                 }
-            } catch(IOException e){
-                    e.printStackTrace();
-            } catch (Exception e){
+            } catch (IOException e) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException iEx) {
+                    iEx.printStackTrace();
+                }
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
