@@ -36,6 +36,7 @@ public class ChatPanel extends JPanel{
         textField.setLocation(0,650);
         add(textField);
         sendButton = new JButton("send");
+        //sendButton = new JButton("send");
         sendButton.setLocation(230,650);
         sendButton.setSize(70,50);
         createNameLabel("ali");

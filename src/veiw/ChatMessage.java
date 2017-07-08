@@ -3,6 +3,9 @@ package veiw;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by mohsen on 7/7/17.
@@ -15,8 +18,9 @@ public class ChatMessage extends JLabel {
     {
 ////        super("<html><span style='padding:10px;height:100px;float:right;position:relative;direction:rtl'><p>"+name + "</p>: " + message+"</span></html>");
 //        JTextPane text = new JTextPane();
-        setText("<html><span style='color:red;'>"+name+"</span><p style='color:green;'>"+message+"</p></html>");
-        System.out.println(name + ":" + message);
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date dateObj = new Date();
+        setText("<html><span style='color:red;'>"+name+"</span><p style='color:green;'>"+message+ "     "/*"</p></html>"*/ + dateObj.getHours()+":" + dateObj.getMinutes());
         this.name = name;
         this.message = message;
         setBorder(new LineBorder(Color.BLACK,1));

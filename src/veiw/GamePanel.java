@@ -56,6 +56,7 @@ public class GamePanel extends JPanel {
         myField.setShipAt(8,9);
         myField.setShipAt(7,9);
         myField.setShipAt(6,9);
+        myField.setShipAt(3,3);
         paintAgain();
     }
     private void paintAgain()

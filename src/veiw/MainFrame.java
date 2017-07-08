@@ -7,14 +7,20 @@ import javax.swing.*;
  */
 public class MainFrame extends JFrame{
     private MainPanel mainPanel;
+    private MenuBar menuBar;
     public MainFrame()
     {
-        setSize(1000,700);
+        setSize(1000,720);
         setLocation(400,150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setResizable(false);
         mainPanel = new MainPanel();
         add(mainPanel);
+
+
+        menuBar = new MenuBar();
+        //add(menuBar);
+        setJMenuBar(menuBar);
         setVisible(true);
     }
 
