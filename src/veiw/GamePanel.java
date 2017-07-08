@@ -1,19 +1,13 @@
 package veiw;
 
+import tools.MessageManagerHandler;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetAdapter;
-import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by mohsen on 7/5/17.
- */
 public class GamePanel extends JPanel {
 
     private JLabel[][] gameFieldDisplay;
@@ -96,7 +90,7 @@ public class GamePanel extends JPanel {
         gameFieldDisplay[i][j].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                //gameFieldDisplay[i][j].setBackground(Color.BLACK);
+                MessageManagerHandler.sendPointAttack(i,j);
                 myField.setFiredAt(i,j);
                 paintAgain();
             }

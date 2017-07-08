@@ -146,17 +146,13 @@ public class LoginFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(guestButton.isSelected()){
-                    GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
+                   // GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
                     new MessageManagerHandler(new MessageManager(IPField.getText(),Integer.parseInt(guestPortField.getText())));
                 }else{
-                    WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
+                   // WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
                     new MessageManagerHandler(new MessageManager(Integer.parseInt(portField.getText())));
                 }
-
-                if(MessageManagerHandler.isAccept()){
-//                    setVisible(false);
-                    MainFrame mainFrame = new MainFrame();
-                }
+                MainFrame mainFrame = new MainFrame();
             }
         });
     }

@@ -14,7 +14,7 @@ public class MessageTypes {
     /**
      * data of movement
      */
-    public static final byte MOVEMENT =2;
+    public static final byte ATTACK =2;
     /**
      * chat message
      */

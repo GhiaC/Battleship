@@ -1,9 +1,13 @@
-package logic;
+package logic.Message;
+
+import logic.BaseMessage;
+import logic.MessageTypes;
 
 import java.nio.ByteBuffer;
 
 public class ChatMessage extends BaseMessage {
     private String textChat;
+    private byte messageType;
 
     public ChatMessage(String textChat) {
         this.textChat = textChat;
@@ -21,7 +25,7 @@ public class ChatMessage extends BaseMessage {
         ByteBuffer byteBuffer = ByteBuffer.allocate(messageLength);
         byteBuffer.putInt(messageLength);
         byteBuffer.put(MessageTypes.PROTOCOL_VERISON);
-        byteBuffer.put(MessageTypes.REQUEST_LOGIN);
+        byteBuffer.put(MessageTypes.CHAT);
         byteBuffer.putInt(textChatLength);
         byteBuffer.put(textChat.getBytes());
         mSerialized = byteBuffer.array();
@@ -32,7 +36,7 @@ public class ChatMessage extends BaseMessage {
         ByteBuffer byteBuffer = ByteBuffer.wrap(mSerialized);
 //        int messageLength = byteBuffer.getInt();
         byte protocolVersion = byteBuffer.get();
-        byte messageType = byteBuffer.get();
+        this.messageType = byteBuffer.get();
         int textChatLength = byteBuffer.getInt();
         byte[] textChatBytes = new byte[textChatLength];
         byteBuffer.get(textChatBytes);
@@ -41,7 +45,7 @@ public class ChatMessage extends BaseMessage {
 
     @Override
     public byte getMessageType() {
-        return MessageTypes.CHAT;
+        return this.messageType;
     }
 
     public String getTextChat() {

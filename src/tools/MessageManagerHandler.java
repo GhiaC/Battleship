@@ -1,6 +1,7 @@
 package tools;
 
 import logic.BaseMessage;
+import logic.Message.RequestLoginMessage;
 import logic.MessageManager;
 
 public class MessageManagerHandler {
@@ -13,10 +14,13 @@ public class MessageManagerHandler {
     public static void sendData(BaseMessage baseMessage){
         MessageManagerHandler.messageManager.sendData(baseMessage);
     }
-    public static void sendLoginRequest(){
+    public static void sendRequestLogin(String name){
+//        MessageManagerHandler.messageManager.sendRequestLogin(new RequestLoginMessage(name));
+    }
+    public static void sendPointAttack(int x ,int y){
 
     }
-    public static boolean isAccept(){
-        return true;
-    }
+//    public static boolean isAccept(){
+//        return true;
+//    }
 }
