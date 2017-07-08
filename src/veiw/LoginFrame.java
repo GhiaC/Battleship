@@ -21,7 +21,7 @@ public class LoginFrame extends JFrame{
     private JTextField guestPortField;
     private JButton startButton;
     private JButton exitButton;
-    private MessageManager messageManager=null;
+    private MessageManager messageManager;
 
     public LoginFrame()
     {
@@ -43,12 +43,10 @@ public class LoginFrame extends JFrame{
         add(nameField);
 
 
-
         hostButton= new JRadioButton("host");
         hostButton.setLocation(20,60);
         hostButton.setSize(150,80);
         add(hostButton);
-
 
 
         portLabel = new JLabel("Port:");
@@ -79,7 +77,6 @@ public class LoginFrame extends JFrame{
         IPField.setLocation(50,240);
         IPField.setSize(200,30);
         add(IPField);
-
 
 
         guestPortLabel = new JLabel("Port:");
@@ -115,6 +112,7 @@ public class LoginFrame extends JFrame{
     }
     private void setHostButtonActionListener()
     {
+        //for initial for first time
         hostButton.setSelected(true);
         guestButton.setSelected(false);
         guestPortField.setEditable(false);
@@ -148,11 +146,17 @@ public class LoginFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(guestButton.isSelected()){
-                    messageManager = new MessageManager(IPField.getText(),Integer.parseInt(portField.getText()));
+                    GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
+                    new MessageManagerHandler(new MessageManager(IPField.getText(),Integer.parseInt(guestPortField.getText())));
                 }else{
-                    messageManager = new MessageManager(Integer.parseInt(portField.getText()));
+                    WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
+                    new MessageManagerHandler(new MessageManager(Integer.parseInt(portField.getText())));
                 }
-                new MessageManagerHandler(messageManager);
+
+                if(MessageManagerHandler.isAccept()){
+//                    setVisible(false);
+                    MainFrame mainFrame = new MainFrame();
+                }
             }
         });
     }

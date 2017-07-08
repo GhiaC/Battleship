@@ -1,7 +1,5 @@
 package veiw;
 
-import com.sun.org.apache.xml.internal.resolver.readers.ExtendedXMLCatalogReader;
-import sun.awt.ExtendedKeyCodes;
 import tools.ChatHandler;
 import tools.MessageManagerHandler;
 
@@ -12,11 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Executable;
 
-/**
- * Created by mohsen on 7/5/17.
- */
 public class ChatPanel extends JPanel{
 
     JTextField textField;
@@ -64,15 +58,13 @@ public class ChatPanel extends JPanel{
             public void keyPressed(KeyEvent keyEvent) {
                 if(keyEvent.getKeyChar() == '\n')
                     writeMassage();
-
             }
         });
     }
     private void writeMassage()
     {
         chatHandler.writeMessage("ali ",textField.getText());
-        MessageManagerHandler messageManagerHandler=new MessageManagerHandler();
-        messageManagerHandler.sendData(new logic.ChatMessage(textField.getText()));
+        MessageManagerHandler.sendData(new logic.ChatMessage(textField.getText()));
         textField.setText("");
         repaint();
         revalidate();
