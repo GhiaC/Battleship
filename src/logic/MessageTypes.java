@@ -25,4 +25,6 @@ public class MessageTypes {
     public static final byte ACCEPT = 5;
 
     public static final byte FieldMessage = 6;
+
+    public static final byte READY = 7;
 }

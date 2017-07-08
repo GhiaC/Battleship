@@ -18,6 +18,9 @@ public class MessageManagerHandler {
     public static void sendPointAttack(int x ,int y){
         MessageManagerHandler.messageManager.sendPointAttack(x,y);
     }
+    public static void Ready(){
+        MessageManagerHandler.messageManager.Ready();
+    }
     public static void Accept(int enemyNum){
         MessageManagerHandler.messageManager.Accept(enemyNum);
     }

@@ -1,9 +1,6 @@
 package logic;
 
-import logic.Message.AcceptRejectMessage;
-import logic.Message.AttackMessage;
-import logic.Message.ChatMessage;
-import logic.Message.RequestLoginMessage;
+import logic.Message.*;
 
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -185,8 +182,11 @@ public class NetworkHandler extends Thread {
                             case MessageTypes.REJECT:
                                 baseMessage = new AcceptRejectMessage(bytes);
                                 break;
-                                case MessageTypes.FieldMessage:
+                            case MessageTypes.FieldMessage:
 //                                baseMessage = new Fiel(bytes);
+                                break;
+                            case MessageTypes.READY:
+                                baseMessage = new ReadyMessage(bytes);
                                 break;
                         }
                         iNetworkHandlerCallback.onMessageReceived(baseMessage);

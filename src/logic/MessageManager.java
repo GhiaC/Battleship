@@ -1,9 +1,6 @@
 package logic;
 
-import logic.Message.AcceptRejectMessage;
-import logic.Message.AttackMessage;
-import logic.Message.ChatMessage;
-import logic.Message.RequestLoginMessage;
+import logic.Message.*;
 import tools.ChatHandler;
 import veiw.MainFrame;
 
@@ -57,6 +54,10 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         RequestLoginMessage requestLoginMessage = new RequestLoginMessage(name);
         mNetworkHandlerList.get(enemyNum).sendMessage(requestLoginMessage);
     }
+    public void Ready(){
+        ReadyMessage readyMessage = new ReadyMessage();
+        mNetworkHandlerList.get(enemyNum).sendMessage(readyMessage);
+    }
     public void Accept(int enemyNum){
         this.enemyNum = enemyNum;
         AcceptRejectMessage AcceptMessage = new AcceptRejectMessage(true);
@@ -88,10 +89,10 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     public void onMessageReceived(BaseMessage baseMessage){
         switch (baseMessage.getMessageType()) {
             case MessageTypes.REQUEST_LOGIN:
-
+                //TODO
                 break;
             case MessageTypes.ATTACK:
-
+                //TODO
                 break;
             case MessageTypes.CHAT:
                 ChatHandler chatHandler = new ChatHandler();
@@ -99,12 +100,16 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
                 break;
             case MessageTypes.ACCEPT:
                 //MainFrame mainFrame = new MainFrame();
+                //TODO
                 break;
             case MessageTypes.REJECT:
-
+                //TODO
                 break;
             case MessageTypes.FieldMessage:
-
+                //TODO
+                break;
+            case MessageTypes.READY:
+                //TODO
                 break;
         }
     }
