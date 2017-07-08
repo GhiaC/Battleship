@@ -3,6 +3,8 @@ package veiw;
 import sun.rmi.runtime.Log;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by mohsen on 7/7/17.
@@ -10,11 +12,130 @@ import javax.swing.*;
 public class LoginFrame extends JFrame{
 
     JLabel nameLabel;
+    JLabel portLabel;
+    JTextField nameField;
+    JRadioButton hostButton;
+    JRadioButton guestButton;
+    JTextField portField;
+    JLabel IPLabel;
+    JTextField IPField;
+    JLabel guestPortLabel;
+    JTextField guestPortField;
+    JButton startButton;
+    JButton exitButton;
     public LoginFrame()
     {
-        super("please select a selection");
+        super("select Connection mode");
+        setLayout(null);
+        setSize(600,350);
+        setLocation(600,350);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(true);
         nameLabel = new JLabel("Name:");
-        //nameLabel.setLocation(50,50);
+        add(nameLabel);
+        nameLabel.setLocation(20,20);
+        nameLabel.setSize(50,50);
+
+
+        nameField = new JTextField();
+        nameField.setLocation(70,30);
+        nameField.setSize(350,30);
+        add(nameField);
+
+
+
+        hostButton= new JRadioButton("host");
+        hostButton.setLocation(20,60);
+        hostButton.setSize(150,80);
+        add(hostButton);
+
+
+
+        portLabel = new JLabel("Port:");
+        portLabel.setLocation(20,130);
+        portLabel.setSize(50,50);
+        add(portLabel);
+
+
+        portField = new JTextField();
+        portField.setLocation(70,140);
+        portField.setSize(350,30);
+        add(portField);
+
+
+        guestButton = new JRadioButton("Guest");
+        guestButton.setLocation(20,170);
+        guestButton.setSize(100,60);
+        add(guestButton);
+
+
+        IPLabel = new JLabel("IP:");
+        IPLabel.setLocation(20,230);
+        IPLabel.setSize(50,50);
+        add(IPLabel);
+
+
+        IPField = new JTextField();
+        IPField.setLocation(50,240);
+        IPField.setSize(200,30);
+        add(IPField);
+
+
+
+        guestPortLabel = new JLabel("Port:");
+        guestPortLabel.setLocation(260,230);
+        guestPortLabel.setSize(50,50);
+        add(guestPortLabel);
+
+
+        guestPortField = new JTextField();
+        guestPortField.setLocation(310,240);
+        guestPortField.setSize(200,30);
+        add(guestPortField);
+
+
+
+        startButton = new JButton("Start");
+        startButton.setLocation(500,300);
+        startButton.setSize(90,40);
+        add(startButton);
+
+
+        exitButton = new JButton("Exit");
+        exitButton.setLocation(400,300);
+        exitButton.setSize(90,40);
+        add(exitButton);
+
+
+        setHostButtonActionListener();
+        setGuestButtonActionListener();
+        setVisible(true);
+
+    }
+    private void setHostButtonActionListener()
+    {
+        hostButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                guestButton.setSelected(false);
+                guestPortField.setEditable(false);
+                portField.setEditable(true);
+                IPField.setEditable(false);
+
+            }
+        });
+    }
+    private void setGuestButtonActionListener()
+    {
+        guestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                hostButton.setSelected(false);
+                portField.setEditable(false);
+                IPField.setEditable(true);
+                guestPortField.setEditable(true);
+            }
+        });
     }
 
 }

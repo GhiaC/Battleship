@@ -2,6 +2,7 @@ import logic.ChatMessage;
 import logic.MessageManager;
 import tools.ChatHandler;
 import tools.MessageManagerHandler;
+import veiw.LoginFrame;
 import veiw.MainFrame;
 
 import java.awt.dnd.DropTarget;
@@ -17,6 +18,7 @@ public class Main {
         }
         new MessageManagerHandler(messageManager);
 
-        MainFrame mainFrame = new MainFrame();
+   //     MainFrame mainFrame = new MainFrame();
+        LoginFrame loginFrame = new LoginFrame();
     }
 }
