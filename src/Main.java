@@ -9,10 +9,12 @@ import java.awt.dnd.DropTarget;
 public class Main {
     public static void main(String[] args) {
         MessageManager messageManager=null;
-        if(false){
+        boolean b = true;
+        b =!b;
+        if(b){
             messageManager = new MessageManager(9999);
         }
-        if(true) {
+        if(!b) {
             messageManager = new MessageManager("127.0.0.1",9999);
         }
         new MessageManagerHandler(messageManager);

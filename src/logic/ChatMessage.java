@@ -30,7 +30,7 @@ public class ChatMessage extends BaseMessage {
     @Override
     protected void deserialize() {
         ByteBuffer byteBuffer = ByteBuffer.wrap(mSerialized);
-        int messageLength = byteBuffer.getInt();
+//        int messageLength = byteBuffer.getInt();
         byte protocolVersion = byteBuffer.get();
         byte messageType = byteBuffer.get();
         int textChatLength = byteBuffer.getInt();
