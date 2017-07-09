@@ -43,7 +43,6 @@ public class isTypingMessage extends BaseMessage {
 
     @Override
     public byte getMessageType() {
-        System.out.println(isTyping());
         if(isTyping())
             return MessageTypes.isTyping;
         else if(!isTyping())

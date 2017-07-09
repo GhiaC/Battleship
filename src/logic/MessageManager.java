@@ -91,16 +91,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     public void isTyping(boolean isTyping) {
         isTypingMessage isTypingMessage = new isTypingMessage(isTyping);
         mNetworkHandlerList.get(enemyNum).sendMessage(isTypingMessage);
-        if(isTypingMessage.getMessageType() == MessageTypes.endTyping){
-            System.out.println("endTyping");
-        }
-        else if(isTypingMessage.getMessageType() == MessageTypes.isTyping){
-            System.out.println("isTyping");
-        }else{
-            System.out.println("errrrrrr");
-
-        }
-
     }
 
     public void sendField(boolean[][] Field) {

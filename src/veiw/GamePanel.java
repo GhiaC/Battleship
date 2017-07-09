@@ -22,12 +22,13 @@ public class GamePanel extends JPanel {
     private StatusPanel statusPanel;
     private ArrayList<Ship> myShips;
     private InGameStatusPanel inGameStatusPanel;
-    ImageIcon seaIcon = new ImageIcon(".\\pic\\sea.png");
-    ImageIcon grayIcon = new ImageIcon(".\\pic\\gray.jpg");
-    ImageIcon blackIcon = new ImageIcon(".\\pic\\black.jpg");
-    ImageIcon redIcon = new ImageIcon(".\\pic\\red.png");
-    ImageIcon fire = new ImageIcon(".\\pic\\fire.gif");
-    ImageIcon greenIcon = new ImageIcon(".\\pic\\green.png");
+    private String folder="";
+    ImageIcon seaIcon = new ImageIcon(folder+"sea.png");
+    ImageIcon grayIcon = new ImageIcon(folder+"gray.jpg");
+    ImageIcon blackIcon = new ImageIcon(folder+"black.jpg");
+    ImageIcon redIcon = new ImageIcon(folder+"red.png");
+    ImageIcon fire = new ImageIcon(folder+"fire.gif");
+    ImageIcon greenIcon = new ImageIcon(folder+"green.png");
     ImageIcon[] tempIcon = new ImageIcon[41];
     private boolean imageInitial = false;
 
@@ -62,7 +63,7 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 40; i++) {
             BufferedImage img = null;
             try {
-                img = ImageIO.read(new File(".\\pic\\" + (i + 1) + ".png"));
+                img = ImageIO.read(new File(folder+ (i + 1) + ".png"));
                 Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
                 tempIcon[i] = new ImageIcon(dimg);
             } catch (IOException e) {
@@ -71,7 +72,7 @@ public class GamePanel extends JPanel {
         }
         try {
             BufferedImage img = null;
-            img = ImageIO.read(new File("pic\\green.jpg"));
+            img = ImageIO.read(new File(folder+"green.jpg"));
             Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
             tempIcon[40] = new ImageIcon(dimg);
         } catch (IOException e) {
