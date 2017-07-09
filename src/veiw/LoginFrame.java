@@ -113,6 +113,7 @@ public class LoginFrame extends JFrame{
         setGuestButtonActionListener();
         setExitButtonActionLinstener();
         setStartButtonActionLinstener();
+        setUndecorated(true);
         setVisible(true);
     }
     private void setHostButtonActionListener()
