@@ -20,15 +20,11 @@ public class isTypingMessage extends BaseMessage {
 
     @Override
     protected void serialize() {
-        int messageLength = 4 + 1 + 1  ;
+        int messageLength = 4 + 1 + 1 ;
         ByteBuffer byteBuffer = ByteBuffer.allocate(messageLength);
         byteBuffer.putInt(messageLength);
         byteBuffer.put(MessageTypes.PROTOCOL_VERISON);
-        if(isTyping){
-            byteBuffer.put(MessageTypes.isTyping);
-        }else {
-            byteBuffer.put(MessageTypes.endTyping);
-        }
+        byteBuffer.put(getMessageType());
         mSerialized = byteBuffer.array();
     }
 
@@ -40,14 +36,19 @@ public class isTypingMessage extends BaseMessage {
         this.messageType = byteBuffer.get();
         if(this.messageType == MessageTypes.isTyping){
             this.isTyping = true;
-        }else{
+        }else if(this.messageType == MessageTypes.endTyping){
             this.isTyping = false;
         }
     }
 
     @Override
     public byte getMessageType() {
-        return this.messageType;
+        System.out.println(isTyping());
+        if(isTyping())
+            return MessageTypes.isTyping;
+        else if(!isTyping())
+            return MessageTypes.endTyping;
+        return MessageTypes.endTyping;
     }
 
     public boolean isTyping() {

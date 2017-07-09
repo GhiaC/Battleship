@@ -63,7 +63,7 @@ public class ChatPanel extends JPanel{
                 if(keyEvent.getKeyChar() == '\n') {
                     writeMassage();
                 }
-                if (textField.getText().equals("")) {
+                if (!textField.getText().equals("") && textField.getText().length() > 1) {
                     MessageManagerHandler.isTyping(true);
                 } else {
                     MessageManagerHandler.isTyping(false);

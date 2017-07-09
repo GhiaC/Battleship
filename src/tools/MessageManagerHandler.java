@@ -33,7 +33,6 @@ public class MessageManagerHandler {
         MessageManagerHandler.messageManager.Ready();
     }
     public static void isTyping(boolean isTyping){
-        System.out.println(isTyping);
         MessageManagerHandler.messageManager.isTyping(isTyping);
 
     }
