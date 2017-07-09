@@ -10,7 +10,8 @@ public class TurnMessage extends BaseMessage {
     private byte messageType;
     private byte turn;
 
-    public TurnMessage() {
+    public TurnMessage(byte turn) {
+        this.turn = turn;
         serialize();
     }
 

@@ -296,14 +296,10 @@ public class StatusPanel extends JPanel {
         readyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(!allShipPutted()) {
+                if(allShipPutted()) {
                     gameMod = !gameMod;
                     mainPanel.openInGameStatusPanel();
-
-                    gamePanel.getMyField().setPlayerType(false);
                     Game.setOneField(gamePanel.getMyField(),0);
-
-                    gamePanel.getMyField().setPlayerType(true);
                     MessageManagerHandler.sendField(gamePanel.getMyField());
                     //TODO maybe he can't start the game we should handle that
                 }

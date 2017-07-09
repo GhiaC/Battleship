@@ -62,11 +62,12 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         mNetworkHandlerList.get(enemyNum).sendMessage(readyMessage);
     }
     public void sendTurn() {
-        TurnMessage turnMessage = new TurnMessage();
+        TurnMessage turnMessage = new TurnMessage(MessageTypes.TURNServer);
         int turn = 1;
         if(turnMessage.getTurn() == MessageTypes.TURNServer){
             turn = 0 ;
         }
+        System.out.println("sendturn "+turn);
         Game.setTurn(turn);
         mNetworkHandlerList.get(enemyNum).sendMessage(turnMessage);
     }

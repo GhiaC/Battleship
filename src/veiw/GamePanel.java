@@ -66,7 +66,6 @@ public class GamePanel extends JPanel {
             }
             else
             {
-                System.out.println(myField.getPlayerType());
                 if(myField.getFiredAt(i,j) && myField.getShipAt(i,j))
                     gameFieldDisplay[i][j].setBackground(Color.RED);
                 else if(myField.getFiredAt(i,j))

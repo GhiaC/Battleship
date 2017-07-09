@@ -43,7 +43,6 @@ public class TcpChannel {
      * Write bytes on output stream
      */
     public void write(byte[] data){
-        System.out.println("writing");
         try {
             mOutputStream.write(data);
         }catch (IOException ioException){

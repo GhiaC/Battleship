@@ -34,7 +34,6 @@ public class ServerSocketHandler extends Thread {
         if (!server.isClosed() && !Thread.currentThread().isInterrupted()) {
             try {
                 while (!server.isClosed()) {
-                    System.out.println(1111);
                     Socket s = server.accept();
                     NetworkHandler network = new NetworkHandler(s, iNetworkHandlerCallback);
                     this.iServerHandlerCallback.onNewConnectionReceived(network);
