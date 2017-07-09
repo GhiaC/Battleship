@@ -32,4 +32,6 @@ public class MessageTypes {
     public static final byte TURN = 10;
     public static final byte TURNServer = 11;
     public static final byte TURNClient = 12;
+    public static final byte isTyping = 13;
+    public static final byte endTyping = 14;
 }

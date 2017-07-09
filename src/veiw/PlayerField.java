@@ -137,7 +137,6 @@ public class PlayerField {
                 break;
         }
         for (int k = 0; k < ship.getSize(); k++) {
-            // if(inBound(i,j))
             tmpShip[i][j] = shift+k;
             j += dx[ship.getDir() + 4];
             i += dy[ship.getDir() + 4];

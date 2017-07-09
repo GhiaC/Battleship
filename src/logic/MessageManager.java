@@ -87,6 +87,11 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         }
     }
 
+    public void isTyping(boolean isTyping) {
+        isTypingMessage isTypingMessage = new isTypingMessage(isTyping);
+        mNetworkHandlerList.get(enemyNum).sendMessage(isTypingMessage);
+    }
+
     public void sendField(boolean[][] Field) {
         FieldMessage fieldMessage = new FieldMessage(Field);
         mNetworkHandlerList.get(enemyNum).sendMessage(fieldMessage);
@@ -138,10 +143,15 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
             case MessageTypes.TURN:
                 int turn = 0;
                 if(((TurnMessage)baseMessage).getTurn() == MessageTypes.TURNServer){
-                       turn = 1 ;
+                    turn = 1 ;
                 }
                 Game.setTurn(turn);
                 //TODO
+                break;
+            case MessageTypes.isTyping:
+                if(!((isTypingMessage)baseMessage).isTyping()){
+                    //TODO
+                }
                 break;
 
         }
