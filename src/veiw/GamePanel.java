@@ -62,7 +62,7 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 40; i++) {
             BufferedImage img = null;
             try {
-                img = ImageIO.read(new File("pic\\" + (i + 1) + ".png"));
+                img = ImageIO.read(new File(".\\pic\\" + (i + 1) + ".png"));
                 Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
                 tempIcon[i] = new ImageIcon(dimg);
             } catch (IOException e) {
