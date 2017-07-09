@@ -6,24 +6,37 @@ public class MainPanel extends JPanel{
     ChatPanel chatPanel;
     StatusPanel statusPanel;
     MenuBar menuBar;
-    //GameViewerPanel gameVeiwerPanel;
     MainGamePanel mainGamePanel;
+    InGameStatusPanel inGameStatusPanel;
     public MainPanel()
     {
         setLayout(null);
         setSize(1000,700);
         chatPanel = new ChatPanel();
-//gameVeiwerPanel = new GameViewerPanel();
         mainGamePanel = new MainGamePanel();
         statusPanel = new StatusPanel();
         menuBar = new MenuBar();
+        statusPanel.setGamePanel(mainGamePanel.getGamePanel());
+        statusPanel.setMainPanel(this);
+        mainGamePanel.setStatusPanel(statusPanel);
         add(chatPanel);
         add(statusPanel);
-// add(gameVeiwerPanel);
         add(mainGamePanel);
         add(menuBar);
         repaint();
     }
+    public void openInGameStatusPanel()
+    {
+       // remove(statusPanel);
+        statusPanel.setVisible(false);
+        inGameStatusPanel = new InGameStatusPanel();
+        add(inGameStatusPanel);
+        mainGamePanel.setInGameStatusPanel(inGameStatusPanel);
+        revalidate();
 
-
+    }
+    public void printField(PlayerField playerField)
+    {
+        mainGamePanel.printField(playerField);
+    }
 }

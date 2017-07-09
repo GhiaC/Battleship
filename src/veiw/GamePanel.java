@@ -7,11 +7,16 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
 
     private JLabel[][] gameFieldDisplay;
     private PlayerField myField;
+    private StatusPanel statusPanel;
+    private ArrayList<Ship> myShips;
+    private InGameStatusPanel inGameStatusPanel;
     public GamePanel()
     {
         /*DropTarget dropTarget =new DropTarget(this, new DropTargetAdapter() {
@@ -21,6 +26,7 @@ public class GamePanel extends JPanel {
                 //Object data = dropTargetDropEvent.getTransferable().getTransferData(DataFlavor.)
             }
         })*/
+        myShips = new ArrayList<Ship>();
         gameFieldDisplay = new JLabel[10][10];
         setLayout(new GridLayout(10,10));
         setSize(300,300);
@@ -36,28 +42,47 @@ public class GamePanel extends JPanel {
                 add(gameFieldDisplay[i][j]);
             }
             myField = new PlayerField();
-            setDefaultField();
+      //      setDefaultField();
             setActionListenerGameField();
     }
-    private void setDefaultField()
+    public void removeOneShip()
     {
-        myField.setShipAt(0,0);
-        myField.setShipAt(0,1);
-        myField.setShipAt(0,2);
-        myField.setShipAt(5,5);
-        myField.setShipAt(5,6);
-        myField.setShipAt(9,9);
-        myField.setShipAt(8,9);
-        myField.setShipAt(7,9);
-        myField.setShipAt(6,9);
-        myField.setShipAt(3,3);
-        paintAgain();
+        if(myShips.size() > 0) {
+            Ship ship = myShips.get(myShips.size()-1);
+            myField.removeShip(ship);
+            myShips.remove(ship);
+            statusPanel.undoShip(ship.getSize());
+            paintAgain();
+        }
     }
+
     private void paintAgain()
     {
         for(int i=0;i<10;i++)
             for(int j=0;j<10;j++) {
-                if(myField.getShipAt(i,j) && !myField.getFiredAt(i,j))
+            if(!statusPanel.getGameMod()) {
+                if (myField.getConflictShipAt(i, j))
+                    gameFieldDisplay[i][j].setBackground(Color.RED);
+                else if (myField.getTempShip(i, j))
+                    gameFieldDisplay[i][j].setBackground(Color.gray);
+                else if (myField.getShipAt(i, j))
+                    gameFieldDisplay[i][j].setBackground(Color.GREEN);
+                else
+                    gameFieldDisplay[i][j].setBackground(Color.BLUE);
+            }
+            else
+            {
+                if(myField.getFiredAt(i,j) && myField.getShipAt(i,j))
+                    gameFieldDisplay[i][j].setBackground(Color.RED);
+                else if(myField.getFiredAt(i,j))
+                    gameFieldDisplay[i][j].setBackground(Color.BLACK);
+                else if(myField.getShipAt(i,j))
+                    gameFieldDisplay[i][j].setBackground(Color.GREEN);
+                else
+                    gameFieldDisplay[i][j].setBackground(Color.BLUE);
+
+            }
+                /*if(myField.getShipAt(i,j) && !myField.getFiredAt(i,j))
                 {
                     gameFieldDisplay[i][j].setBackground(Color.GREEN);
                 }
@@ -72,6 +97,7 @@ public class GamePanel extends JPanel {
                 }
                 else
                     gameFieldDisplay[i][j].setBackground(Color.BLUE);
+                 */
             }
         repaint();
         revalidate();
@@ -85,15 +111,102 @@ public class GamePanel extends JPanel {
             }
     //    paintAgain();
     }
+    private void putTempShip(Ship ship,int i ,int j)
+    {
+        if(myField.inBoundShip(ship,i,j))
+        {
+            ship.setX(j);
+            ship.setY(i);
+            if(myField.notConflict(ship,i,j)) {
+                myField.removeAllTempShip();
+
+                myField.removeAllConflictShip();
+                myField.putTempShip(ship);
+
+            }
+            else
+            {
+                myField.removeAllTempShip();
+                myField.removeAllConflictShip();
+                myField.putConflictShip(ship);
+            }
+            paintAgain();
+        }
+
+    }
     private void setActionListener(int i,int j)
     {
         gameFieldDisplay[i][j].addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                MessageManagerHandler.sendPointAttack(i,j);
-                myField.setFiredAt(i,j);
-                paintAgain();
+            public void mousePressed(MouseEvent mouseEvent) {
+                if(mouseEvent.getButton() == MouseEvent.BUTTON3)
+                {
+                    if(!statusPanel.getGameMod())
+                    {
+                        if(statusPanel.getChosenShip()!=null)
+                            statusPanel.getChosenShip().setDir();
+                        Ship ship = statusPanel.getChosenShip();
+                        putTempShip(ship,i,j);
+                    }
+
+                }
+                else if(!statusPanel.getGameMod())
+                {
+                    if(statusPanel.getChosenShip()!=null)
+                    {
+                         Ship ship = statusPanel.getChosenShip();
+                        if (myField.inBoundShip(ship,i,j) && myField.notConflict(ship, i, j)) {
+                            ship.setX(j);
+                            ship.setY(i);
+                            myField.removeAllTempShip();
+                            myField.putShip(ship);
+                            myShips.add(ship);
+                            statusPanel.setChosenShip(null);
+                            paintAgain();
+                        }
+
+                    }
+                }
+                else
+                {
+                    myField.setFiredAt(i,j);
+                    if(myField.getShipFired() >0) {
+                        inGameStatusPanel.removeEnemyShip(myField.getShipFired()/2 + 1);
+                        myField.setShipFired();
+                    }
+                    paintAgain();
+                }
             }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                if(!statusPanel.getGameMod())
+                {
+                    if(statusPanel.getChosenShip()!=null) {
+                        Ship ship = statusPanel.getChosenShip();
+                        putTempShip(ship,i,j);
+                    }
+                }
+
+            }
+
         });
+    }
+    public void setInGameStatusPanel(InGameStatusPanel inGameStatusPanel)
+    {
+        this.inGameStatusPanel = inGameStatusPanel;
+    }
+    public void resetPanel()
+    {
+        myField.resetField();
+        paintAgain();
+    }
+    public void printField()
+    {
+        //TODO
+    }
+    public void setStatusPanel(StatusPanel statusPanel)
+    {
+        this.statusPanel = statusPanel;
     }
 }

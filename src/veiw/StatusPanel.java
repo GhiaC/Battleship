@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -22,6 +24,18 @@ public class StatusPanel extends JPanel {
     private JLabel shipNumberLabel1;
     private JButton readyButton;
     private JButton resetButton;
+    private JButton undoButton;
+
+    private GamePanel gamePanel;
+    private boolean gameMod;
+    private Ship chosenShip;
+
+
+    private int[] numberOfShips;
+
+
+    private MainPanel mainPanel;
+
     public StatusPanel()
     {
       //  setBackground(Color.gray);
@@ -29,6 +43,8 @@ public class StatusPanel extends JPanel {
         setBorder(new LineBorder(Color.BLACK,1));
         setLocation(0,550);
         setSize(700,150);
+        numberOfShips = new int[5];
+        makeUndoButton();
         makeShipLabel4();
         makeShipLabel3();
         makeShipLabel2();
@@ -39,12 +55,76 @@ public class StatusPanel extends JPanel {
         makeShipNumberLabel3();
         makeShipNumberLabel2();
         makeShipNumberLabel1();
+        chosenShip = null;
 
+        actionListenerShipLabel4();
+        actionListenerShipLabel3();
+        actionListenerShipLabel2();
+        actionListenerShipLabel1();
+        setActionListenerResetButton();
+        setActionListenerReadyButton();
+        setUndoButtonActionListener();
+        gameMod = false;
+    }
+    private void makeUndoButton()
+    {
+        undoButton = new JButton("undo");
+        undoButton.setSize(100,50);
+        undoButton.setLocation(580,0);
+        add(undoButton);
+    }
+    private void setUndoButtonActionListener()
+    {
+        undoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gamePanel.removeOneShip();
+            }
+        });
+    }
+    public void setMainPanel(MainPanel mainPanel)
+    {
+        this.mainPanel = mainPanel;
+    }
+    public boolean getGameMod()
+    {
+        return gameMod;
+    }
+    public void setGamePanel(GamePanel gamePanel)
+    {
+        this.gamePanel = gamePanel;
+    }
+    public Ship getChosenShip()
+    {
+        return chosenShip;
+    }
+    private void countNumberOfShips()
+    {
+        numberOfShips[chosenShip.getSize()]--;
+
+        showNumberOfShips();
+    }
+    private void showNumberOfShips()
+    {
+        shipNumberLabel1.setText("*" + numberOfShips[1]);
+        shipNumberLabel2.setText("*" + numberOfShips[2]);
+        shipNumberLabel3.setText("*" + numberOfShips[3]);
+        shipNumberLabel4.setText("*" + numberOfShips[4]);
+        revalidate();
+
+    }
+    public void setChosenShip(Ship ship)
+    {
+        countNumberOfShips();
+        chosenShip = ship;
+        removeAllBackground();
     }
     private void makeShipNumberLabel4() {
         shipNumberLabel4 = new JLabel("*1");
         shipNumberLabel4.setLocation(185,16);
         shipNumberLabel4.setSize(30,20);
+
+        numberOfShips[4] = 1;
         add(shipNumberLabel4);
     }
     private void makeShipNumberLabel3()
@@ -52,6 +132,10 @@ public class StatusPanel extends JPanel {
         shipNumberLabel3 = new JLabel("*2");
         shipNumberLabel3.setLocation(185,50);
         shipNumberLabel3.setSize(30,20);
+
+
+        numberOfShips[3] = 2;
+
         add(shipNumberLabel3);
     }
     private void makeShipNumberLabel2()
@@ -59,6 +143,8 @@ public class StatusPanel extends JPanel {
         shipNumberLabel2 = new JLabel("*3");
         shipNumberLabel2.setLocation(185,85);
         shipNumberLabel2.setSize(30,20);
+
+        numberOfShips[2] = 3;
         add(shipNumberLabel2);
     }
     private void makeShipNumberLabel1()
@@ -66,6 +152,8 @@ public class StatusPanel extends JPanel {
         shipNumberLabel1 = new JLabel("*4");
         shipNumberLabel1.setLocation(185,120);
         shipNumberLabel1.setSize(30,20);
+
+        numberOfShips[1] = 4;
         add(shipNumberLabel1);
 
     }
@@ -121,13 +209,100 @@ public class StatusPanel extends JPanel {
         shipLabel4.setBorder(new LineBorder(Color.BLACK,1));
         add(shipLabel4);
     }
-    private void actoinListenterShipLabel4()
+    private void removeAllBackground()
+    {
+
+        shipLabel4.setBackground(Color.white);
+        shipLabel3.setBackground(Color.white);
+        shipLabel2.setBackground(Color.white);
+        shipLabel1.setBackground(Color.white);
+
+    }
+    private void actionListenerShipLabel4()
     {
         shipLabel4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-
+                if(numberOfShips[4] > 0) {
+                    removeAllBackground();
+                    shipLabel4.setBackground(Color.RED);
+                    chosenShip = new Ship(4, 0);
+                }
             }
         });
+    }
+    private void actionListenerShipLabel3()
+    {
+        shipLabel3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(numberOfShips[3] > 0) {
+                    removeAllBackground();
+                    shipLabel3.setBackground(Color.RED);
+                    chosenShip = new Ship(3, 0);
+                }
+            }
+        });
+    }private void actionListenerShipLabel2()
+    {
+        shipLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(numberOfShips[2] > 0) {
+                    removeAllBackground();
+                    shipLabel2.setBackground(Color.RED);
+                    chosenShip = new Ship(2, 0);
+                }
+            }
+        });
+    }private void actionListenerShipLabel1()
+    {
+        shipLabel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(numberOfShips[1] > 0) {
+                    removeAllBackground();
+                    shipLabel1.setBackground(Color.RED);
+                    chosenShip = new Ship(1, 0);
+                }
+            }
+        });
+    }
+    private void setActionListenerResetButton()
+    {
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gamePanel.resetPanel();
+                for(int i=1;i<=4;i++)
+                   numberOfShips[i] = 4 - i + 1;
+                showNumberOfShips();
+            }
+        });
+    }
+    private boolean allShipPutted()
+    {
+        for(int i=1;i<=4;i++)
+            if(numberOfShips[i] >0)
+                return false;
+        return true;
+    }
+    private void setActionListenerReadyButton()
+    {
+        readyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(allShipPutted()) {
+                    gameMod = !gameMod;
+                    mainPanel.openInGameStatusPanel();
+                    //TODO maybe he can't start the game we should handle that
+                }
+            }
+        });
+    }
+    public void undoShip(int size)
+    {
+        numberOfShips[size]++;
+        showNumberOfShips();
     }
 }
