@@ -20,7 +20,6 @@ public class ChatPanel extends JPanel{
     ChatHandler chatHandler;
     public ChatPanel()
     {
-    //    setBackground(Color.BLACK);
         setLocation(700,0);
         setSize(300,700);
         setLayout(null);
@@ -64,7 +63,7 @@ public class ChatPanel extends JPanel{
     }
     private void writeMassage()
     {
-        chatHandler.writeMessage("ali ",textField.getText());
+        chatHandler.writeMessage("Me",textField.getText());
         MessageManagerHandler.sendMessage(textField.getText());
         textField.setText("");
         repaint();

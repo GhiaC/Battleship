@@ -2,6 +2,7 @@ package veiw;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -19,58 +20,25 @@ public class ChatMessage extends JEditorPane {
     private String message;
     public ChatMessage(String name , String message)
     {
-
+        setContentType( "text/html" );
+        setText( "<html><body>Hello, world</body></html>" );
         DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date dateObj = new Date();
-
-// create a JEditorPane
-//        JEditorPane jEditorPane = new JEditorPane();
-
-// make it read-only
-        setEditable(false);
-
-// add a HTMLEditorKit to the editor pane
-        HTMLEditorKit kit = new HTMLEditorKit();
-        setEditorKit(kit);
-
-// now add it to a scroll pane
-        //JScrollPane scrollPane = new JScrollPane(jEditorPane);
-
-
-// add some styles to the html
-        StyleSheet
-                styleSheet = kit.getStyleSheet();
-
-        styleSheet.addRule(".section {margin-top:10px;padding:10px;" +
-                "width:100%;margin-left:30px !important;");
-        styleSheet.addRule(".time {position:relative;float:right;width:100%;text-align:right;}");
-        styleSheet.addRule(".total {border:2px solid rgb(70,70,70);}");
-        styleSheet.addRule("p {width:90%}");
-
-//        styleSheet.addRule(".empty {" +
-//                "position:relative;float:right;width:20px;border:2px solid rgb(70,70,70);");
-//        styleSheet.addRule(".total {" +
-//                "position:relative;float:right;width:300px;border:2px solid rgb(0,170,70);");
-
-//        styleSheet.addRule("* {" +
-//                "padding:0;" +
-//                "margin:0;}");
-
-// create a document, set it on the jeditorpane, then add the html
-        Document doc = kit.createDefaultDocument();
-        setDocument(doc);
-        setText(
-                "<html>" +
-                        "<div class='section'>" +
-                        "<div class='total'>"+
-                        name+"<br>"+message+"<br><div class='time'> "+ dateObj.getHours()+":" + dateObj.getMinutes()+" </div>" +
-                        "<div></div>" +
-                "</html>"
-                );
+        setText("<html><body style='width:125px;padding:5px;border:0px solid rgb(60,60,60);background:rgb(86,130,163);'>" +
+                "<span style='color:red;'>"+name+"</span>"+
+                "<br><span style='color:white'>"+name+"</span><br>" +
+                "<p style='color:blue;text-align:right;'>"+ dateObj.getHours()+":" + dateObj.getMinutes()+"</p></body><html>");
 
         this.name = name;
+        setBackground(new Color(230,230,230));
         this.message = message;
-        setBorder(new LineBorder(Color.BLACK,1));
+        setOpaque(true);
+        int right = 90,left=0;
+        if(name.equals("Me")){
+            right = 0;
+            left =90;
+        }
+        setBorder(new MatteBorder(5, left, 5, right, new Color(0,0,0,0)));
         writeMessage();
     }
     private void writeMessage()

@@ -3,42 +3,51 @@ package veiw;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by mohsen on 7/7/17.
- */
 public class ChatViewerPanel extends JPanel {
-    private static int counter=0;
+    private GridBagConstraints gbc = new GridBagConstraints();
+    private JPanel jPanel = new JPanel();
     public ChatViewerPanel()
     {
-        setLocation(0,50);
-        setSize(300,600);
-        setOpaque(false);
+        setOpaque(true);
+        setBounds(0,50,300,600);
         ChatMessage.setChatViewerPanel(this);
+        jPanel.setBackground(new Color(230,230,230));
+        jPanel.setOpaque(true);
+        jPanel.setLayout(new GridBagLayout());
 
-        JTable t = new JTable(null);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
 
-        GridBagLayout grid = new GridBagLayout();
-        setLayout(grid);
 
-        GridBagLayout layout = new GridBagLayout();
-        this.setLayout(layout);
-        gbc.gridwidth = 3;
-        gbc.gridheight = 1;
-        setPreferredSize(getSize());
+        for (int i = 0; i < 2; i++) {
+            write(new ChatMessage("HIII","HIIIII"));
+        }
+        // Temporary panel to fill the rest of the bigPanel
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.add(jPanel);
+        scrollPane.setSize(300,600);
+        gbc.weighty = 1.0;
+        jPanel.add(empty, gbc);
+        add(scrollPane);
+
         setVisible(true);
 
     }
-    GridBagConstraints gbc = new GridBagConstraints();
+    JPanel empty =new JPanel();
     public void write(ChatMessage chatMessage)
     {
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10,10,10,10);  //top padding
-        gbc.gridx = 0;
-        gbc.gridy = counter;
-        gbc.anchor = GridBagConstraints.ABOVE_BASELINE_TRAILING; //bottom of space
-        gbc.weightx = 3;
-        this.add(chatMessage, gbc);
-        counter++;
+        jPanel.remove(empty);
+        gbc.weighty = 0;
+        JPanel panel_a = new JPanel();
+        panel_a.setBounds(0,0,250,150);
+        panel_a.add(chatMessage, gbc);
+        jPanel.add(panel_a, gbc);
+
+        gbc.weighty = 1.0;
+        jPanel.add(empty, gbc);
+
         repaint();
     }
 }
