@@ -8,9 +8,13 @@ import java.nio.ByteBuffer;
 public class RequestLoginMessage extends BaseMessage {
     private String mUsername;
     private byte messageType;
-
+    public RequestLoginMessage(byte [] mSerialized) {
+        this.mSerialized = mSerialized;
+        deserialize();
+    }
     public RequestLoginMessage(String name) {
         mUsername = name;
+        serialize();
     }
 
     @Override

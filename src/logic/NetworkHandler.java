@@ -1,6 +1,6 @@
 package logic;
 
-import logic.Message.ChatMessage;
+import logic.Message.*;
 
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -12,7 +12,7 @@ public class NetworkHandler extends Thread {
     private ArrayList<byte[]> mReceivedQueue;
     private ReceivedMessageConsumer mConsumerThread;
     protected INetworkHandlerCallback iNetworkHandlerCallback;
-    private boolean queueEmpty = false;
+    private boolean stop = false;
 
     //k
 //    public NetworkHandler(SocketAddress socketAddress,INetworkHandlerCallback iNetworkHandlerCallback){
@@ -35,11 +35,13 @@ public class NetworkHandler extends Thread {
      * Add serialized bytes of message to the sendQueue
      */
     public void sendMessage(BaseMessage baseMessage) {
-        try {
-            mSendQueue.add(baseMessage.getSerialized());
-            System.out.println("in sendMessage method :" + ((ChatMessage) baseMessage).getTextChat());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        if(!stop) {
+            try {
+                mSendQueue.add(baseMessage.getSerialized());
+                System.out.println("in sendMessage method :" + ((ChatMessage) baseMessage).getTextChat());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -78,16 +80,20 @@ public class NetworkHandler extends Thread {
      * Kill the thread and close the channel.
      */
     public void stopSelf() {
-        queueEmpty = false;
+        mTcpChannel.closeChannel();
+        stop = true;
     }
 
     /**
      * Try to read some bytes from the channel.
      */
     public byte[] readChannel() {
-        int size = sizeOfMessage();
-        byte[] bytes = mTcpChannel.read(size - 4);
-        return bytes;
+        if (!stop) {
+            int size = sizeOfMessage();
+            byte[] bytes = mTcpChannel.read(size - 4);
+            return bytes;
+        }
+        return null;
     }
 
     private class Sender extends Thread {
@@ -98,7 +104,7 @@ public class NetworkHandler extends Thread {
         @Override
         public void run() {
             try {
-                while (mTcpChannel.isConnected()) {
+                while (mTcpChannel.isConnected() && !stop) {
                     if (!mSendQueue.isEmpty()) {
                         mTcpChannel.write(mSendQueue.get(0));
                         mSendQueue.remove(0);
@@ -123,10 +129,8 @@ public class NetworkHandler extends Thread {
         @Override
         public void run() {
             try {
-                while (mTcpChannel.isConnected()) {
-                    System.out.println("before read");
+                while (mTcpChannel.isConnected() && !stop) {
                     byte[] bytes = readChannel();
-                    System.out.println("after read");
                     if (bytes != null) {
                         mReceivedQueue.add(bytes);
                     }
@@ -157,9 +161,35 @@ public class NetworkHandler extends Thread {
                     if (!mReceivedQueue.isEmpty()) {
                         byte[] bytes = mReceivedQueue.get(0);
                         mReceivedQueue.remove(0);
-                        ChatMessage chatMessage = new ChatMessage(bytes);
-                        System.out.println("message received");
-                        iNetworkHandlerCallback.onMessageReceived(chatMessage);
+                        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+//        int messageLength = byteBuffer.getInt();
+                        byte protocolVersion = byteBuffer.get();
+                        byte messageType = byteBuffer.get();
+                        BaseMessage baseMessage = null;
+                        switch (messageType) {
+                            case MessageTypes.REQUEST_LOGIN:
+                                baseMessage = new RequestLoginMessage(bytes);
+                                break;
+                            case MessageTypes.ATTACK:
+                                baseMessage = new AttackMessage(bytes);
+                                break;
+                            case MessageTypes.CHAT:
+                                baseMessage = new ChatMessage(bytes);
+                                break;
+                            case MessageTypes.ACCEPT:
+                                baseMessage = new AcceptRejectMessage(bytes);
+                                break;
+                            case MessageTypes.REJECT:
+                                baseMessage = new AcceptRejectMessage(bytes);
+                                break;
+                            case MessageTypes.FieldMessage:
+//                                baseMessage = new Fiel(bytes);
+                                break;
+                            case MessageTypes.READY:
+                                baseMessage = new ReadyMessage(bytes);
+                                break;
+                        }
+                        iNetworkHandlerCallback.onMessageReceived(baseMessage);
                     } else {
                         try {
                             Thread.sleep(100);

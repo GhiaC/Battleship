@@ -64,7 +64,7 @@ public class ChatPanel extends JPanel{
     private void writeMassage()
     {
         chatHandler.writeMessage("ali ",textField.getText());
-        MessageManagerHandler.sendData(new logic.Message.ChatMessage(textField.getText()));
+        MessageManagerHandler.sendMessage(textField.getText());
         textField.setText("");
         repaint();
         revalidate();
