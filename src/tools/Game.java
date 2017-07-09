@@ -32,6 +32,9 @@ public class Game {
         }
 
     }
+    public static void setTurn(int num){
+        turn = num;
+    }
     public static void attackAt(int i,int j)
     {
         boolean flag = false;

@@ -187,6 +187,9 @@ public class NetworkHandler extends Thread {
                             case MessageTypes.READY:
                                 baseMessage = new ReadyMessage(bytes);
                                 break;
+                            case MessageTypes.TURN:
+                                baseMessage = new TurnMessage(bytes);
+                                break;
                         }
                         iNetworkHandlerCallback.onMessageReceived(baseMessage);
                     } else {

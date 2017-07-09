@@ -61,6 +61,15 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         ReadyMessage readyMessage = new ReadyMessage();
         mNetworkHandlerList.get(enemyNum).sendMessage(readyMessage);
     }
+    public void sendTurn() {
+        TurnMessage turnMessage = new TurnMessage();
+        int turn = 1;
+        if(turnMessage.getTurn() == MessageTypes.TURNServer){
+            turn = 0 ;
+        }
+        Game.setTurn(turn);
+        mNetworkHandlerList.get(enemyNum).sendMessage(turnMessage);
+    }
 
     public void Accept(int enemyNum) {
         this.enemyNum = enemyNum;
@@ -89,6 +98,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     @Override
     public void onNewConnectionReceived(NetworkHandler networkHandler) {
         mNetworkHandlerList.add(networkHandler);
+        sendTurn();
     }
 
     @Override
@@ -124,6 +134,15 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
             case MessageTypes.READY:
                 //TODO
                 break;
+            case MessageTypes.TURN:
+                int turn = 0;
+                if(((TurnMessage)baseMessage).getTurn() == MessageTypes.TURNServer){
+                       turn = 1 ;
+                }
+                Game.setTurn(turn);
+                //TODO
+                break;
+
         }
     }
 

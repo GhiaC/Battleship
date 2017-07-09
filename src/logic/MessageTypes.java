@@ -29,4 +29,7 @@ public class MessageTypes {
     public static final byte READY = 7;
     public static final byte EMPTY = 8;
     public static final byte SHIP = 9;
+    public static final byte TURN = 10;
+    public static final byte TURNServer = 11;
+    public static final byte TURNClient = 12;
 }
