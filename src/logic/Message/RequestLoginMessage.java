@@ -1,62 +1,49 @@
-package logic;
+package logic.Message;
+
+import logic.BaseMessage;
+import logic.MessageTypes;
 
 import java.nio.ByteBuffer;
 
 public class RequestLoginMessage extends BaseMessage {
     private String mUsername;
-    private String mPassword;
+    private byte messageType;
 
-    public RequestLoginMessage(String username, String password) {
-        mUsername = username;
-        mPassword = password;
-        serialize();
-    }
-
-    public RequestLoginMessage(byte[] serialized) {
-        mSerialized = serialized;
-        deserialize();
+    public RequestLoginMessage(String name) {
+        mUsername = name;
     }
 
     @Override
     protected void serialize() {
         int usernameLength = mUsername.getBytes().length;
-        int passwordLength = mPassword.getBytes().length;
-        int messageLength = 4 + 1 + 1 + 4 + usernameLength + 4 + passwordLength;
+        int messageLength = 4 + 1 + 1 + 4 + usernameLength ;
         ByteBuffer byteBuffer = ByteBuffer.allocate(messageLength);
         byteBuffer.putInt(messageLength);
         byteBuffer.put(MessageTypes.PROTOCOL_VERISON);
         byteBuffer.put(MessageTypes.REQUEST_LOGIN);
         byteBuffer.putInt(usernameLength);
         byteBuffer.put(mUsername.getBytes());
-        byteBuffer.putInt(passwordLength);
-        byteBuffer.put(mPassword.getBytes());
         mSerialized = byteBuffer.array();
     }
 
     @Override
     protected void deserialize() {
         ByteBuffer byteBuffer = ByteBuffer.wrap(mSerialized);
-        int messageLength = byteBuffer.getInt();
+        //int messageLength = byteBuffer.getInt();
         byte protocolVersion = byteBuffer.get();
-        byte messageType = byteBuffer.get();
+        this.messageType = byteBuffer.get();
         int usernameLength = byteBuffer.getInt();
         byte[] usernameBytes = new byte[usernameLength];
         byteBuffer.get(usernameBytes);
         mUsername = new String(usernameBytes);
-        int passwordLength = byteBuffer.getInt();
-        byte[] passwordBytes = new byte[passwordLength];
-        byteBuffer.get(passwordBytes);
-        mPassword = new String(passwordBytes);
     }
 
     @Override
     public byte getMessageType() {
-        return MessageTypes.REQUEST_LOGIN;
+        return this.messageType;
     }
-    public String getmUsername(){
+
+    public String getmUsername() {
         return mUsername;
-    }
-    public String getmPassword(){
-        return mPassword;
     }
 }

@@ -23,7 +23,17 @@ public class GameViewerPanel extends JPanel {
     public void printField(PlayerField playerField)
     {
         gamePanel.printField();
-
     }
-
+    public GamePanel getGamePanel()
+    {
+        return gamePanel;
+    }
+    public void setStatusPanel(StatusPanel statusPanel)
+    {
+       gamePanel.setStatusPanel(statusPanel);
+    }
+    public void setInGameStatusPanel(InGameStatusPanel inGameStatusPanel)
+    {
+        gamePanel.setInGameStatusPanel(inGameStatusPanel);
+    }
 }

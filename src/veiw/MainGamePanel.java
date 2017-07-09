@@ -27,5 +27,17 @@ public class MainGamePanel extends JPanel {
     {
         gamePanel.printField(playerField);
     }
+    public GamePanel getGamePanel()
+    {
+        return gamePanel.getGamePanel();
+    }
+    public void setStatusPanel(StatusPanel statusPanel)
+    {
+        gamePanel.setStatusPanel(statusPanel);
+    }
+    public void setInGameStatusPanel(InGameStatusPanel inGameStatusPanel)
+    {
+        gamePanel.setInGameStatusPanel(inGameStatusPanel);
+    }
 
 }

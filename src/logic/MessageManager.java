@@ -1,8 +1,7 @@
 package logic;
 
-import sun.nio.ch.Net;
+import logic.Message.ChatMessage;
 import tools.ChatHandler;
-import tools.MessageManagerHandler;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -31,7 +30,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         if(socket!=null){
             NetworkHandler networkHandler = new NetworkHandler(socket,this );
             mNetworkHandlerList.add(networkHandler);
-//            networkHandler.start();
         }
     }
 
@@ -58,7 +56,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     @Override
     public void onNewConnectionReceived(NetworkHandler networkHandler){
         mNetworkHandlerList.add(networkHandler);
-//        networkHandler.start();
     }
 
     @Override

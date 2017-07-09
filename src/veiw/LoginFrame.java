@@ -1,28 +1,28 @@
 package veiw;
 
-import sun.rmi.runtime.Log;
+import logic.MessageManager;
+import tools.MessageManagerHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created by mohsen on 7/7/17.
- */
 public class LoginFrame extends JFrame{
 
-    JLabel nameLabel;
-    JLabel portLabel;
-    JTextField nameField;
-    JRadioButton hostButton;
-    JRadioButton guestButton;
-    JTextField portField;
-    JLabel IPLabel;
-    JTextField IPField;
-    JLabel guestPortLabel;
-    JTextField guestPortField;
-    JButton startButton;
-    JButton exitButton;
+    private JLabel nameLabel;
+    private JLabel portLabel;
+    private JTextField nameField;
+    private JRadioButton hostButton;
+    private JRadioButton guestButton;
+    private JTextField portField;
+    private JLabel IPLabel;
+    private JTextField IPField;
+    private JLabel guestPortLabel;
+    private JTextField guestPortField;
+    private JButton startButton;
+    private JButton exitButton;
+    private MessageManager messageManager;
+
     public LoginFrame()
     {
         super("select Connection mode");
@@ -43,12 +43,10 @@ public class LoginFrame extends JFrame{
         add(nameField);
 
 
-
         hostButton= new JRadioButton("host");
         hostButton.setLocation(20,60);
         hostButton.setSize(150,80);
         add(hostButton);
-
 
 
         portLabel = new JLabel("Port:");
@@ -81,7 +79,6 @@ public class LoginFrame extends JFrame{
         add(IPField);
 
 
-
         guestPortLabel = new JLabel("Port:");
         guestPortLabel.setLocation(260,230);
         guestPortLabel.setSize(50,50);
@@ -109,11 +106,19 @@ public class LoginFrame extends JFrame{
 
         setHostButtonActionListener();
         setGuestButtonActionListener();
+        setExitButtonActionLinstener();
+        setStartButtonActionLinstener();
         setVisible(true);
-
     }
     private void setHostButtonActionListener()
     {
+        //for initial for first time
+        hostButton.setSelected(true);
+        guestButton.setSelected(false);
+        guestPortField.setEditable(false);
+        portField.setEditable(true);
+        IPField.setEditable(false);
+
         hostButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -121,7 +126,6 @@ public class LoginFrame extends JFrame{
                 guestPortField.setEditable(false);
                 portField.setEditable(true);
                 IPField.setEditable(false);
-
             }
         });
     }
@@ -134,6 +138,30 @@ public class LoginFrame extends JFrame{
                 portField.setEditable(false);
                 IPField.setEditable(true);
                 guestPortField.setEditable(true);
+            }
+        });
+    }
+    private void setStartButtonActionLinstener(){
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(guestButton.isSelected()){
+                   // GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
+                    new MessageManagerHandler(new MessageManager(IPField.getText(),Integer.parseInt(guestPortField.getText())));
+                }else{
+                   // WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
+                    new MessageManagerHandler(new MessageManager(Integer.parseInt(portField.getText())));
+                }
+                MainFrame mainFrame = new MainFrame();
+                setVisible(false);
+            }
+        });
+    }
+    private void setExitButtonActionLinstener(){
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
             }
         });
     }

@@ -1,5 +1,7 @@
 package logic;
 
+import logic.Message.ChatMessage;
+
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

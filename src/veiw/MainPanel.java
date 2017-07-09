@@ -7,6 +7,7 @@ public class MainPanel extends JPanel{
     StatusPanel statusPanel;
     MenuBar menuBar;
     MainGamePanel mainGamePanel;
+    InGameStatusPanel inGameStatusPanel;
     public MainPanel()
     {
         setLayout(null);
@@ -15,16 +16,27 @@ public class MainPanel extends JPanel{
         mainGamePanel = new MainGamePanel();
         statusPanel = new StatusPanel();
         menuBar = new MenuBar();
+        statusPanel.setGamePanel(mainGamePanel.getGamePanel());
+        statusPanel.setMainPanel(this);
+        mainGamePanel.setStatusPanel(statusPanel);
         add(chatPanel);
         add(statusPanel);
         add(mainGamePanel);
         add(menuBar);
         repaint();
     }
+    public void openInGameStatusPanel()
+    {
+       // remove(statusPanel);
+        statusPanel.setVisible(false);
+        inGameStatusPanel = new InGameStatusPanel();
+        add(inGameStatusPanel);
+        mainGamePanel.setInGameStatusPanel(inGameStatusPanel);
+        revalidate();
+
+    }
     public void printField(PlayerField playerField)
     {
         mainGamePanel.printField(playerField);
     }
-
-
 }

@@ -1,20 +1,11 @@
-import logic.ChatMessage;
 import logic.MessageManager;
-import tools.ChatHandler;
 import tools.MessageManagerHandler;
-import veiw.GuestWaitingFrame;
 import veiw.LoginFrame;
 import veiw.MainFrame;
-import veiw.WaitingForConnectionFrame;
-
-import java.awt.dnd.DropTarget;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Main {
     public static void main(String[] args) {
+        MainFrame mainFrame = new MainFrame();
         MessageManager messageManager=null;
         boolean b = true;
         b =!b;
@@ -26,9 +17,10 @@ public class Main {
         }
         new MessageManagerHandler(messageManager);
 
-        MainFrame mainFrame = new MainFrame();
+        //MainFrame mainFrame = new MainFrame();
  //       LoginFrame loginFrame = new LoginFrame();
 //       WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
   //      GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
+        //LoginFrame loginFrame = new LoginFrame();
     }
 }
