@@ -1,6 +1,7 @@
 package veiw;
 
 import logic.MessageManager;
+import tools.Game;
 import tools.MessageManagerHandler;
 
 import javax.swing.*;
@@ -298,6 +299,11 @@ public class StatusPanel extends JPanel {
                 if(!allShipPutted()) {
                     gameMod = !gameMod;
                     mainPanel.openInGameStatusPanel();
+
+                    gamePanel.getMyField().setPlayerType(false);
+                    Game.setOneField(gamePanel.getMyField(),0);
+
+                    gamePanel.getMyField().setPlayerType(true);
                     MessageManagerHandler.sendField(gamePanel.getMyField());
                     //TODO maybe he can't start the game we should handle that
                 }

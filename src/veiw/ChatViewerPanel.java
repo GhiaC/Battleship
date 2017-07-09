@@ -29,7 +29,6 @@ public class ChatViewerPanel extends JPanel {
 
     }
     GridBagConstraints gbc = new GridBagConstraints();
-
     public void write(ChatMessage chatMessage)
     {
         gbc.fill = GridBagConstraints.HORIZONTAL;

@@ -12,6 +12,8 @@ public class PlayerField {
     private int[] dx;
     private int[] dy;
     private int shipFired;
+    private boolean playerType;
+    // if == 1 is enemy
     public boolean isChangeTurn(int i,int j)
     {
         if(fired[i][j])
@@ -31,6 +33,14 @@ public class PlayerField {
         conflictTmpShip = new boolean[10][10];
         dx = new int[]{+1, +1, -1, -1 ,+1 , 0 , -1 , 0};
         dy = new int[]{-1, +1, +1, -1 , 0 , +1 , 0 , -1};
+    }
+    public void setPlayerType(boolean type)
+    {
+        playerType = type;
+    }
+    public boolean getPlayerType()
+    {
+        return playerType;
     }
     public boolean[][] getField()
     {

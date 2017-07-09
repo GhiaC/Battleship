@@ -22,7 +22,7 @@ public class GameViewerPanel extends JPanel {
     }
     public void printField(PlayerField playerField)
     {
-        gamePanel.printField();
+        gamePanel.printField(playerField);
     }
     public GamePanel getGamePanel()
     {

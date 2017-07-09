@@ -20,13 +20,6 @@ public class GamePanel extends JPanel {
     private InGameStatusPanel inGameStatusPanel;
     public GamePanel()
     {
-        /*DropTarget dropTarget =new DropTarget(this, new DropTargetAdapter() {
-            @Override
-            public void drop(DropTargetDropEvent dropTargetDropEvent) {
-                dropTargetDropEvent.acceptDrop(DnDConstants.ACTION_REFERENCE);
-                //Object data = dropTargetDropEvent.getTransferable().getTransferData(DataFlavor.)
-            }
-        })*/
         myShips = new ArrayList<Ship>();
         gameFieldDisplay = new JLabel[10][10];
         setLayout(new GridLayout(10,10));
@@ -73,11 +66,12 @@ public class GamePanel extends JPanel {
             }
             else
             {
+                System.out.println(myField.getPlayerType());
                 if(myField.getFiredAt(i,j) && myField.getShipAt(i,j))
                     gameFieldDisplay[i][j].setBackground(Color.RED);
                 else if(myField.getFiredAt(i,j))
                     gameFieldDisplay[i][j].setBackground(Color.BLACK);
-                else if(myField.getShipAt(i,j))
+                else if(myField.getShipAt(i,j) && !myField.getPlayerType())
                     gameFieldDisplay[i][j].setBackground(Color.GREEN);
                 else
                     gameFieldDisplay[i][j].setBackground(Color.BLUE);
@@ -170,12 +164,13 @@ public class GamePanel extends JPanel {
                 }
                 else
                 {
-                    Game.sendAttackPoint(i,j);
+                    Game.pointClicked(i,j);
                     /*myField.setFiredAt(i,j);
                     if(myField.getShipFired() >0) {
                         inGameStatusPanel.removeEnemyShip(myField.getShipFired()/2 + 1);
                         myField.setShipFired();
                     }*/
+                    System.out.println("fuck you");
                     paintAgain();
                 }
             }
@@ -203,9 +198,10 @@ public class GamePanel extends JPanel {
         myField.resetField();
         paintAgain();
     }
-    public void printField()
+    public void printField(PlayerField playerField)
     {
-        //TODO
+        myField = playerField;
+        paintAgain();
     }
     public void setStatusPanel(StatusPanel statusPanel)
     {
