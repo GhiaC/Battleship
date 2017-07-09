@@ -103,7 +103,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
                 //TODO
                 break;
             case MessageTypes.ATTACK:
-                Game.attackAt(((AttackMessage) baseMessage).getY(), ((AttackMessage) baseMessage).getX());
+                Game.attackAt(((AttackMessage) baseMessage).getX(), ((AttackMessage) baseMessage).getY());
                 //TODO
                 break;
             case MessageTypes.CHAT:
