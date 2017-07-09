@@ -12,18 +12,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class ChatPanel extends JPanel{
-
-    JTextField textField;
-    JButton sendButton;
-    JLabel nameLabel;
-    ChatViewerPanel chatViewerPanel;
-    ChatHandler chatHandler;
+    private JTextField textField;
+    private JButton sendButton;
+    public static JLabel nameLabel,isTypingLanel;
+    private ChatViewerPanel chatViewerPanel;
+    private ChatHandler chatHandler;
     public ChatPanel()
     {
         setLocation(700,0);
         setSize(300,700);
         setLayout(null);
-        setOpaque(false);
+        setOpaque(true);
         setBorder(new LineBorder(Color.BLACK,1));
         chatHandler = new ChatHandler();
         textField = new JTextField("Type here...");
@@ -31,12 +30,11 @@ public class ChatPanel extends JPanel{
         textField.setLocation(0,650);
         add(textField);
         sendButton = new JButton("send");
-        //sendButton = new JButton("send");
         sendButton.setLocation(230,650);
         sendButton.setSize(70,50);
         createNameLabel("ali");
+        createIsTypingLabel();
         chatViewerPanel = new ChatViewerPanel();
-        JScrollPane scrollpane = new JScrollPane(chatViewerPanel);
         add(chatViewerPanel);
         add(sendButton);
         setSendButtonActionListener();
@@ -45,19 +43,31 @@ public class ChatPanel extends JPanel{
     }
     public void createNameLabel(String s) {
         nameLabel = new JLabel("chat to " + s);
-        nameLabel.setSize(300,50);
-        nameLabel.setLocation(0,0);
+        nameLabel.setSize(130,45);
+        nameLabel.setLocation(20,5);
         nameLabel.setOpaque(true);
-        nameLabel.setBorder(new LineBorder(Color.BLACK,1));
         add(nameLabel);
+    }
+    public void createIsTypingLabel(){
+        isTypingLanel = new JLabel("");
+        isTypingLanel.setSize(130,45);
+        isTypingLanel.setLocation(150,5);
+        isTypingLanel.setOpaque(true);
+        add(isTypingLanel);
     }
     private void setTextFieldActionListener()
     {
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                if(keyEvent.getKeyChar() == '\n')
+                if(keyEvent.getKeyChar() == '\n') {
                     writeMassage();
+                }
+                if (textField.getText().equals("")) {
+                    MessageManagerHandler.isTyping(true);
+                } else {
+                    MessageManagerHandler.isTyping(false);
+                }
             }
         });
     }

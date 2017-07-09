@@ -26,7 +26,6 @@ public class MainFrame extends JFrame{
     public void printField(PlayerField playerField)
     {
         mainPanel.printField(playerField);
-
     }
 
 }

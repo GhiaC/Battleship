@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 
 public class isTypingMessage extends BaseMessage {
     private byte messageType;
-    private boolean isTyping;
+    private boolean isTyping = false;
 
     public isTypingMessage(boolean isTyping) {
         this.isTyping = isTyping;
@@ -38,6 +38,11 @@ public class isTypingMessage extends BaseMessage {
 //        int messageLength = byteBuffer.getInt();
         byte protocolVersion = byteBuffer.get();
         this.messageType = byteBuffer.get();
+        if(this.messageType == MessageTypes.isTyping){
+            this.isTyping = true;
+        }else{
+            this.isTyping = false;
+        }
     }
 
     @Override

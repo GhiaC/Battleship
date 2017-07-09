@@ -83,10 +83,11 @@ public class PlayerField {
         int j = ship.getX();
         int i = ship.getY();
         for (int k = 0; k < ship.getSize(); k++) {
-            // if(inBound(i,j))
-            conflictTmpShip[i][j] = true;
-            j += dx[ship.getDir() + 4];
-            i += dy[ship.getDir() + 4];
+            if(!ships[i][j]) {
+                conflictTmpShip[i][j] = true;
+                j += dx[ship.getDir() + 4];
+                i += dy[ship.getDir() + 4];
+            }
         }
     }
 
@@ -137,7 +138,7 @@ public class PlayerField {
                 break;
         }
         for (int k = 0; k < ship.getSize(); k++) {
-            tmpShip[i][j] = shift+k;
+            tmpShip[i][j] = shift+k+(ship.getDir()*100);
             j += dx[ship.getDir() + 4];
             i += dy[ship.getDir() + 4];
         }

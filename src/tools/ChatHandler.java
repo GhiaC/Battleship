@@ -13,6 +13,9 @@ public class ChatHandler {
 
     private static JSONArray jsonArr = new JSONArray();
 
+    public static void GameAlarm(String pm){
+        ChatMessage chatMessage = new ChatMessage("GAME", pm);
+    }
     public void writeMessage(String name, String message) {
         ChatMessage chatMessage = new ChatMessage(name, message);
 

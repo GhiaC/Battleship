@@ -191,7 +191,10 @@ public class NetworkHandler extends Thread {
                                 baseMessage = new TurnMessage(bytes);
                                 break;
                             case MessageTypes.isTyping:
-                                baseMessage = new isTypingMessage(bytes);
+                                baseMessage = new isTypingMessage(true);
+                                break;
+                            case MessageTypes.endTyping:
+                                baseMessage = new isTypingMessage(false);
                                 break;
                         }
                         iNetworkHandlerCallback.onMessageReceived(baseMessage);

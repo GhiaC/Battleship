@@ -3,6 +3,7 @@ package logic;
 import logic.Message.*;
 import tools.ChatHandler;
 import tools.Game;
+import veiw.ChatPanel;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -61,13 +62,14 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         ReadyMessage readyMessage = new ReadyMessage();
         mNetworkHandlerList.get(enemyNum).sendMessage(readyMessage);
     }
+
     public void sendTurn() {
         TurnMessage turnMessage = new TurnMessage(MessageTypes.TURNServer);
         int turn = 1;
-        if(turnMessage.getTurn() == MessageTypes.TURNServer){
-            turn = 0 ;
+        if (turnMessage.getTurn() == MessageTypes.TURNServer) {
+            turn = 0;
         }
-        System.out.println("sendturn "+turn);
+        System.out.println("sendturn " + turn);
         Game.setTurn(turn);
         mNetworkHandlerList.get(enemyNum).sendMessage(turnMessage);
     }
@@ -142,16 +144,19 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
                 break;
             case MessageTypes.TURN:
                 int turn = 0;
-                if(((TurnMessage)baseMessage).getTurn() == MessageTypes.TURNServer){
-                    turn = 1 ;
+                if (((TurnMessage) baseMessage).getTurn() == MessageTypes.TURNServer) {
+                    turn = 1;
                 }
                 Game.setTurn(turn);
                 //TODO
                 break;
             case MessageTypes.isTyping:
-                if(!((isTypingMessage)baseMessage).isTyping()){
-                    //TODO
-                }
+                ChatPanel.isTypingLanel.setText("");
+                System.out.println("isTyping");
+                break;
+            case MessageTypes.endTyping:
+                ChatPanel.isTypingLanel.setText("is Typing ...");
+                System.out.println("empty");
                 break;
 
         }
