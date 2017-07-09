@@ -22,12 +22,12 @@ public class GamePanel extends JPanel {
     private StatusPanel statusPanel;
     private ArrayList<Ship> myShips;
     private InGameStatusPanel inGameStatusPanel;
-    ImageIcon seaIcon = new ImageIcon("pic\\sea.png");
-    ImageIcon grayIcon = new ImageIcon("pic\\gray.jpg");
-    ImageIcon blackIcon = new ImageIcon("pic\\black.jpg");
-    ImageIcon redIcon = new ImageIcon("pic\\red.png");
-    ImageIcon fire = new ImageIcon("pic\\fire.gif");
-    ImageIcon greenIcon = new ImageIcon("pic\\green.png");
+    ImageIcon seaIcon = new ImageIcon(".\\pic\\sea.png");
+    ImageIcon grayIcon = new ImageIcon(".\\pic\\gray.jpg");
+    ImageIcon blackIcon = new ImageIcon(".\\pic\\black.jpg");
+    ImageIcon redIcon = new ImageIcon(".\\pic\\red.png");
+    ImageIcon fire = new ImageIcon(".\\pic\\fire.gif");
+    ImageIcon greenIcon = new ImageIcon(".\\pic\\green.png");
     ImageIcon[] tempIcon = new ImageIcon[41];
     private boolean imageInitial = false;
 
