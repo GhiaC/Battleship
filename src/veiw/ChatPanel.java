@@ -37,6 +37,7 @@ public class ChatPanel extends JPanel{
         sendButton.setSize(70,50);
         createNameLabel("ali");
         chatViewerPanel = new ChatViewerPanel();
+        JScrollPane scrollpane = new JScrollPane(chatViewerPanel);
         add(chatViewerPanel);
         add(sendButton);
         setSendButtonActionListener();
