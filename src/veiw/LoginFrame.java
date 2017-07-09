@@ -151,6 +151,7 @@ public class LoginFrame extends JFrame{
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                MessageManagerHandler.setUsername(nameField.getText());
                 if(guestButton.isSelected()){
                    // GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
                     new MessageManagerHandler(new MessageManager(IPField.getText(),Integer.parseInt(guestPortField.getText())));

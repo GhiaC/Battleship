@@ -6,14 +6,16 @@ import logic.MessageTypes;
 import java.nio.ByteBuffer;
 
 public class ChatMessage extends BaseMessage {
-    private String textChat;
+    private String textChat, name;
     private byte messageType;
 
-    public ChatMessage(String textChat) {
+    public ChatMessage(String name, String textChat) {
+        this.name = name;
         this.textChat = textChat;
         serialize();
     }
-    public ChatMessage(byte [] mSerialized) {
+
+    public ChatMessage(byte[] mSerialized) {
         this.mSerialized = mSerialized;
         deserialize();
     }
@@ -21,13 +23,16 @@ public class ChatMessage extends BaseMessage {
     @Override
     protected void serialize() {
         int textChatLength = textChat.getBytes().length;
-        int messageLength = 4 + 1 + 1 + 4 + textChatLength ;
+        int nameLength = textChat.getBytes().length;
+        int messageLength = 4 + 1 + 1 + 4 + textChatLength + 4 + nameLength;
         ByteBuffer byteBuffer = ByteBuffer.allocate(messageLength);
         byteBuffer.putInt(messageLength);
         byteBuffer.put(MessageTypes.PROTOCOL_VERISON);
         byteBuffer.put(MessageTypes.CHAT);
         byteBuffer.putInt(textChatLength);
         byteBuffer.put(textChat.getBytes());
+        byteBuffer.putInt(nameLength);
+        byteBuffer.put(name.getBytes());
         mSerialized = byteBuffer.array();
     }
 
@@ -41,6 +46,11 @@ public class ChatMessage extends BaseMessage {
         byte[] textChatBytes = new byte[textChatLength];
         byteBuffer.get(textChatBytes);
         textChat = new String(textChatBytes);
+
+        int nameLength = byteBuffer.getInt();
+        byte[] nameBytes = new byte[nameLength];
+        byteBuffer.get(nameBytes);
+        name = new String(nameBytes);
     }
 
     @Override
@@ -50,5 +60,9 @@ public class ChatMessage extends BaseMessage {
 
     public String getTextChat() {
         return textChat;
+    }
+
+    public String getName() {
+        return name;
     }
 }

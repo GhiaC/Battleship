@@ -26,7 +26,7 @@ public class ChatMessage extends JEditorPane {
         Date dateObj = new Date();
         setText("<html><body style='width:125px;padding:5px;border:0px solid rgb(60,60,60);background:rgb(86,130,163);'>" +
                 "<span style='color:red;'>"+name+"</span>"+
-                "<br><span style='color:white'>"+name+"</span><br>" +
+                "<br><span style='color:white'>"+message+"</span><br>" +
                 "<p style='color:blue;text-align:right;'>"+ dateObj.getHours()+":" + dateObj.getMinutes()+"</p></body><html>");
 
         this.name = name;

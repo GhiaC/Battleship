@@ -28,7 +28,8 @@ public class GamePanel extends JPanel {
     ImageIcon redIcon = new ImageIcon("pic\\red.png");
     ImageIcon fire = new ImageIcon("pic\\fire.gif");
     ImageIcon greenIcon = new ImageIcon("pic\\green.png");
-    ImageIcon[] tempIcon = new ImageIcon[40];
+    ImageIcon[] tempIcon = new ImageIcon[41];
+    private boolean imageInitial = false;
 
     public GamePanel() {
         myShips = new ArrayList<Ship>();
@@ -68,9 +69,21 @@ public class GamePanel extends JPanel {
                 e.printStackTrace();
             }
         }
+        try {
+            BufferedImage img = null;
+            img = ImageIO.read(new File("pic\\green.jpg"));
+            Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            tempIcon[40] = new ImageIcon(dimg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        imageInitial = true;
     }
 
     private int getMode(int mode) {
+        if (mode == 100) {
+            return 40;
+        }
         int num = mode % 100;
         int dir = mode / 100;
         int result = num + dir * 10;
@@ -78,7 +91,9 @@ public class GamePanel extends JPanel {
     }
 
     private void paintAgain() {
-        initialImage(gameFieldDisplay[0][0].getWidth(), gameFieldDisplay[0][0].getHeight());
+        if (!imageInitial) {
+            initialImage(gameFieldDisplay[0][0].getWidth(), gameFieldDisplay[0][0].getHeight());
+        }
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
                 if (!statusPanel.getGameMod()) {
@@ -88,21 +103,21 @@ public class GamePanel extends JPanel {
                     } else if (myField.getTempShip(i, j) >= 0) {
                         gameFieldDisplay[i][j].setIcon(tempIcon[getMode(myField.getTempShip(i, j))]);
                         gameFieldDisplay[i][j].setBackground(Color.gray);
-                    } else if (myField.getShipAt(i, j)) {
-                        gameFieldDisplay[i][j].setIcon(greenIcon);
+                    } else if (myField.getShipAt(i, j) != -1) {
+                        gameFieldDisplay[i][j].setIcon(tempIcon[getMode(myField.getShipAt(i, j))]);
                         gameFieldDisplay[i][j].setBackground(Color.GREEN);
                     } else {
                         gameFieldDisplay[i][j].setIcon(seaIcon);
                     }
                 } else {
-                    if (myField.getFiredAt(i, j) && myField.getShipAt(i, j)) {
+                    if (myField.getFiredAt(i, j) && myField.getShipAt(i, j) != -1) {
                         gameFieldDisplay[i][j].setIcon(fire);
                         gameFieldDisplay[i][j].setBackground(Color.RED);
                     } else if (myField.getFiredAt(i, j)) {
                         gameFieldDisplay[i][j].setIcon(blackIcon);
                         gameFieldDisplay[i][j].setBackground(Color.BLACK);
-                    } else if (myField.getShipAt(i, j) && !myField.getPlayerType()) {
-                        gameFieldDisplay[i][j].setIcon(greenIcon);
+                    } else if (myField.getShipAt(i, j) != -1 && !myField.getPlayerType()) {
+                        gameFieldDisplay[i][j].setIcon(tempIcon[getMode(myField.getShipAt(i, j))]);
                         gameFieldDisplay[i][j].setBackground(Color.GREEN);
                     } else {
                         gameFieldDisplay[i][j].setIcon(seaIcon);
@@ -176,8 +191,8 @@ public class GamePanel extends JPanel {
                         if (myField.inBoundShip(ship, i, j) && myField.notConflict(ship, i, j)) {
                             ship.setX(j);
                             ship.setY(i);
-                            myField.removeAllTempShip();
                             myField.putShip(ship);
+                            myField.removeAllTempShip();
                             myShips.add(ship);
                             statusPanel.setChosenShip(null);
                             paintAgain();

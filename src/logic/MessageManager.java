@@ -43,8 +43,8 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         }
     }
 
-    public void sendMessage(String message) {
-        ChatMessage chatMessage = new ChatMessage(message);
+    public void sendMessage(String name, String message) {
+        ChatMessage chatMessage = new ChatMessage(name, message);
         mNetworkHandlerList.get(enemyNum).sendMessage(chatMessage);
     }
 
@@ -69,7 +69,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         if (turnMessage.getTurn() == MessageTypes.TURNServer) {
             turn = 0;
         }
-        System.out.println("sendturn " + turn);
         Game.setTurn(turn);
         mNetworkHandlerList.get(enemyNum).sendMessage(turnMessage);
     }
@@ -97,7 +96,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     public void sendField(boolean[][] Field) {
         FieldMessage fieldMessage = new FieldMessage(Field);
         mNetworkHandlerList.get(enemyNum).sendMessage(fieldMessage);
-        sendMessage("<span style='color:green'>I'm Ready</span>");
+        sendMessage("Enemy","<span style='color:green'>I'm Ready</span>");
     }
 
     /**
@@ -126,7 +125,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
                 break;
             case MessageTypes.CHAT:
                 ChatHandler chatHandler = new ChatHandler();
-                chatHandler.writeMessage("test ", ((ChatMessage) baseMessage).getTextChat());
+                chatHandler.writeMessage(((ChatMessage) baseMessage).getName(), ((ChatMessage) baseMessage).getTextChat());
                 break;
             case MessageTypes.ACCEPT:
                 //MainFrame mainFrame = new MainFrame();

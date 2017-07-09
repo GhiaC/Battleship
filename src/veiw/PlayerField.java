@@ -4,7 +4,7 @@ package veiw;
  * Created by mohsen on 7/7/17.
  */
 public class PlayerField {
-    private boolean[][] ships;
+    private int[][] ships;
     private boolean[][] fired;
     private boolean[][] mark;
     private int[][] tmpShip;
@@ -18,7 +18,7 @@ public class PlayerField {
     public boolean isChangeTurn(int i, int j) {
         if (fired[i][j])
             return false;
-        else if (ships[i][j])
+        else if (ships[i][j] != -1)
             return false;
         else
             return true;
@@ -26,13 +26,17 @@ public class PlayerField {
     }
 
     public PlayerField() {
-        ships = new boolean[10][10];
+        ships = new int[10][10];
         fired = new boolean[10][10];
         mark = new boolean[10][10];
         tmpShip = new int[10][10];
         conflictTmpShip = new boolean[10][10];
         dx = new int[]{+1, +1, -1, -1, +1, 0, -1, 0};
         dy = new int[]{-1, +1, +1, -1, 0, +1, 0, -1};
+        for (int i = 0; i < 10; i++)
+            for (int j = 0; j < 10; j++) {
+                ships[i][j] = -1;
+            }
     }
 
     public void setPlayerType(boolean type) {
@@ -44,7 +48,17 @@ public class PlayerField {
     }
 
     public boolean[][] getField() {
-        return ships;
+        boolean[][] result = new boolean[10][10];
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (ships[i][j] != -1) {
+                    result[i][j] = true;
+                } else {
+                    result[i][j] = false;
+                }
+            }
+        }
+        return result;
     }
 
     public int getTempShip(int i, int j) {
@@ -70,7 +84,7 @@ public class PlayerField {
             for (int d = 0; d < 8; d++) {
                 int jj = j + dx[d];
                 int ii = i + dy[d];
-                if (inBound(ii, jj) && ships[ii][jj])
+                if (inBound(ii, jj) && ships[ii][jj] != -1)
                     return false;
             }
             j += dx[ship.getDir() + 4];
@@ -83,7 +97,7 @@ public class PlayerField {
         int j = ship.getX();
         int i = ship.getY();
         for (int k = 0; k < ship.getSize(); k++) {
-            if(!ships[i][j]) {
+            if (ships[i][j] == -1) {
                 conflictTmpShip[i][j] = true;
                 j += dx[ship.getDir() + 4];
                 i += dy[ship.getDir() + 4];
@@ -102,7 +116,7 @@ public class PlayerField {
         int i = ship.getY();
         for (int k = 0; k < ship.getSize(); k++) {
             // if(inBound(i,j))
-            ships[i][j] = false;
+            ships[i][j] = -1;
             j += dx[ship.getDir() + 4];
             i += dy[ship.getDir() + 4];
         }
@@ -114,7 +128,7 @@ public class PlayerField {
         int i = ship.getY();
         for (int k = 0; k < ship.getSize(); k++) {
             // if(inBound(i,j))
-            ships[i][j] = true;
+            ships[i][j] = tmpShip[i][j];
             j += dx[ship.getDir() + 4];
             i += dy[ship.getDir() + 4];
         }
@@ -125,8 +139,8 @@ public class PlayerField {
         int j = ship.getX();
         int i = ship.getY();
         int size = ship.getSize();
-        int shift =0;
-        switch (size){
+        int shift = 0;
+        switch (size) {
             case 3:
                 shift = 4;
                 break;
@@ -138,7 +152,7 @@ public class PlayerField {
                 break;
         }
         for (int k = 0; k < ship.getSize(); k++) {
-            tmpShip[i][j] = shift+k+(ship.getDir()*100);
+            tmpShip[i][j] = shift + k + (ship.getDir() * 100);
             j += dx[ship.getDir() + 4];
             i += dy[ship.getDir() + 4];
         }
@@ -151,7 +165,7 @@ public class PlayerField {
     }
 
     public void setShipAt(int i, int j) {
-        ships[i][j] = true;
+        ships[i][j] = 100;
     }
 
     private boolean inBound(int i, int j) {
@@ -160,8 +174,8 @@ public class PlayerField {
 
     private boolean checkShip(int i, int j) {
         mark[i][j] = true;
-        if (ships[i][j] && !fired[i][j]) return true;
-        else if (!ships[i][j]) return false;
+        if (ships[i][j] != -1 && !fired[i][j]) return true;
+        else if (ships[i][j] == -1) return false;
         for (int k = 4; k < 8; k++) {
             int jj = j + dx[k];
             int ii = i + dy[k];
@@ -180,7 +194,7 @@ public class PlayerField {
             int ii = i + dy[k];
             if (inBound(ii, jj) && !mark[ii][jj]) {
                 fired[ii][jj] = true;
-                if (ships[ii][jj]) {
+                if (ships[ii][jj] != -1) {
                     shipFired++;
                     shipCrushed(ii, jj);
                 }
@@ -197,7 +211,7 @@ public class PlayerField {
     }
 
     private void checkNeighbors(int i, int j) {
-        if (ships[i][j]) {
+        if (ships[i][j] != -1) {
             for (int k = 0; k < 4; k++) {
                 int jj = j + dx[k];
                 int ii = i + dy[k];
@@ -226,13 +240,13 @@ public class PlayerField {
     public void resetField() {
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
-                ships[i][j] = false;
+                ships[i][j] = -1;
                 tmpShip[i][j] = -1;
                 conflictTmpShip[i][j] = false;
             }
     }
 
-    public boolean getShipAt(int i, int j) {
+    public int getShipAt(int i, int j) {
         return ships[i][j];
     }
 

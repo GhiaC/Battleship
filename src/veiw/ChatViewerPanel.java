@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class ChatViewerPanel extends JPanel {
     private GridBagConstraints gbc = new GridBagConstraints();
+    private JPanel empty =new JPanel();
     private JPanel jPanel = new JPanel();
     public ChatViewerPanel()
     {
@@ -19,10 +20,6 @@ public class ChatViewerPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
 
-
-        for (int i = 0; i < 2; i++) {
-            write(new ChatMessage("HIII","HIIIII"));
-        }
         // Temporary panel to fill the rest of the bigPanel
 
         ScrollPane scrollPane = new ScrollPane();
@@ -35,7 +32,6 @@ public class ChatViewerPanel extends JPanel {
         setVisible(true);
 
     }
-    JPanel empty =new JPanel();
     public void write(ChatMessage chatMessage)
     {
         jPanel.remove(empty);
