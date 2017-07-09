@@ -114,7 +114,7 @@ public class GamePanel extends JPanel {
                         gameFieldDisplay[i][j].setIcon(fire);
                         gameFieldDisplay[i][j].setBackground(Color.RED);
                     } else if (myField.getFiredAt(i, j)) {
-                        gameFieldDisplay[i][j].setIcon(blackIcon);
+                        gameFieldDisplay[i][j].setIcon(grayIcon);
                         gameFieldDisplay[i][j].setBackground(Color.BLACK);
                     } else if (myField.getShipAt(i, j) != -1 && !myField.getPlayerType()) {
                         gameFieldDisplay[i][j].setIcon(tempIcon[getMode(myField.getShipAt(i, j))]);
