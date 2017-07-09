@@ -2,20 +2,26 @@ package tools;
 
 import veiw.MainFrame;
 import veiw.PlayerField;
+import veiw.StatusPanel;
 
 /**
  * Created by mohsen on 7/8/17.
  */
 public class Game {
     private static PlayerField[] field = new PlayerField[2];
-    private static MainFrame mainFrame = new MainFrame();
+    private static MainFrame mainFrame ;
     private static int turn;
-    public Game()
-    {
+    private static int readyCounter = 0;
+    public Game() {
+
+    }
+    public static void openMainFrame(){
+        mainFrame = new MainFrame();
     }
     public static void setOneField(PlayerField field,int ind)
     {
         Game.field[ind] = field;
+        readyCounter++;
     }
     public static void attackAt(int i,int j)
     {
@@ -31,6 +37,6 @@ public class Game {
     }
     public static void sendAttackPoint(int i,int j)
     {
-        //TODO by masoud
+        MessageManagerHandler.sendPointAttack(i,j);
     }
 }

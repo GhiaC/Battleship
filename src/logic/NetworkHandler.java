@@ -38,7 +38,6 @@ public class NetworkHandler extends Thread {
         if(!stop) {
             try {
                 mSendQueue.add(baseMessage.getSerialized());
-                System.out.println("in sendMessage method :" + ((ChatMessage) baseMessage).getTextChat());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -183,7 +182,7 @@ public class NetworkHandler extends Thread {
                                 baseMessage = new AcceptRejectMessage(bytes);
                                 break;
                             case MessageTypes.FieldMessage:
-//                                baseMessage = new Fiel(bytes);
+                                baseMessage = new FieldMessage(bytes);
                                 break;
                             case MessageTypes.READY:
                                 baseMessage = new ReadyMessage(bytes);

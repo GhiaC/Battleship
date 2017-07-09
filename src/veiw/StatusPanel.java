@@ -1,5 +1,8 @@
 package veiw;
 
+import logic.MessageManager;
+import tools.MessageManagerHandler;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -292,9 +295,10 @@ public class StatusPanel extends JPanel {
         readyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(allShipPutted()) {
+                if(!allShipPutted()) {
                     gameMod = !gameMod;
                     mainPanel.openInGameStatusPanel();
+                    MessageManagerHandler.sendField(gamePanel.getMyField());
                     //TODO maybe he can't start the game we should handle that
                 }
             }

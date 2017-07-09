@@ -1,6 +1,7 @@
 package veiw;
 
 import logic.MessageManager;
+import tools.Game;
 import tools.MessageManagerHandler;
 
 import javax.swing.*;
@@ -38,6 +39,7 @@ public class LoginFrame extends JFrame{
 
 
         nameField = new JTextField();
+        nameField.setText("name");
         nameField.setLocation(70,30);
         nameField.setSize(350,30);
         add(nameField);
@@ -58,6 +60,7 @@ public class LoginFrame extends JFrame{
         portField = new JTextField();
         portField.setLocation(70,140);
         portField.setSize(350,30);
+        portField.setText("1111");
         add(portField);
 
 
@@ -74,6 +77,7 @@ public class LoginFrame extends JFrame{
 
 
         IPField = new JTextField();
+        IPField.setText("127.0.0.1");
         IPField.setLocation(50,240);
         IPField.setSize(200,30);
         add(IPField);
@@ -86,6 +90,7 @@ public class LoginFrame extends JFrame{
 
 
         guestPortField = new JTextField();
+        guestPortField.setText("1111");
         guestPortField.setLocation(310,240);
         guestPortField.setSize(200,30);
         add(guestPortField);
@@ -152,7 +157,7 @@ public class LoginFrame extends JFrame{
                    // WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
                     new MessageManagerHandler(new MessageManager(Integer.parseInt(portField.getText())));
                 }
-                MainFrame mainFrame = new MainFrame();
+                Game.openMainFrame();
                 setVisible(false);
             }
         });

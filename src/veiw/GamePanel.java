@@ -1,5 +1,6 @@
 package veiw;
 
+import tools.Game;
 import tools.MessageManagerHandler;
 
 import javax.swing.*;
@@ -169,11 +170,12 @@ public class GamePanel extends JPanel {
                 }
                 else
                 {
-                    myField.setFiredAt(i,j);
+                    Game.sendAttackPoint(i,j);
+                    /*myField.setFiredAt(i,j);
                     if(myField.getShipFired() >0) {
                         inGameStatusPanel.removeEnemyShip(myField.getShipFired()/2 + 1);
                         myField.setShipFired();
-                    }
+                    }*/
                     paintAgain();
                 }
             }
@@ -208,5 +210,9 @@ public class GamePanel extends JPanel {
     public void setStatusPanel(StatusPanel statusPanel)
     {
         this.statusPanel = statusPanel;
+    }
+    public PlayerField getMyField()
+    {
+        return myField;
     }
 }

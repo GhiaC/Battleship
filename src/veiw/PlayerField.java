@@ -32,6 +32,10 @@ public class PlayerField {
         dx = new int[]{+1, +1, -1, -1 ,+1 , 0 , -1 , 0};
         dy = new int[]{-1, +1, +1, -1 , 0 , +1 , 0 , -1};
     }
+    public boolean[][] getField()
+    {
+        return ships;
+    }
     public boolean getTempShip(int i,int j)
     {
         return tmpShip[i][j];

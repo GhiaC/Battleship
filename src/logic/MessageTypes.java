@@ -27,4 +27,6 @@ public class MessageTypes {
     public static final byte FieldMessage = 6;
 
     public static final byte READY = 7;
+    public static final byte EMPTY = 8;
+    public static final byte SHIP = 9;
 }

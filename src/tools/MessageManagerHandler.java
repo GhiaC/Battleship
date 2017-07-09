@@ -1,6 +1,7 @@
 package tools;
 
 import logic.MessageManager;
+import veiw.PlayerField;
 
 public class MessageManagerHandler {
     private static MessageManager messageManager;
@@ -11,6 +12,9 @@ public class MessageManagerHandler {
 
     public static void sendMessage(String message){
         MessageManagerHandler.messageManager.sendMessage(message);
+    }
+    public static void sendField(PlayerField playerField){
+        MessageManagerHandler.messageManager.sendField(playerField.getField());
     }
     public static void sendRequestLogin(String name){
         MessageManagerHandler.messageManager.sendRequestLogin(name);
