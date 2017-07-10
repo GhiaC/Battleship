@@ -130,6 +130,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         switch (baseMessage.getMessageType()) {
             case MessageTypes.REQUEST_LOGIN:
                 String ip = mNetworkHandlerList.get(mNetworkHandlerList.size()-1).getIP();
+//                ChatPanel.nameLabel.setText("Chat to"+((RequestLoginMessage)baseMessage).getmUsername());
                 waitingForConnectionFrame.addNewConnection(ip,((RequestLoginMessage)baseMessage).getmUsername());
                 break;
             case MessageTypes.ATTACK:
