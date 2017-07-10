@@ -64,7 +64,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     }
 
     public void sendTurn() {
-        TurnMessage turnMessage = new TurnMessage(MessageTypes.TURNServer);
+        TurnMessage turnMessage = new TurnMessage();
         int turn = 1;
         if (turnMessage.getTurn() == MessageTypes.TURNServer) {
             turn = 0;
