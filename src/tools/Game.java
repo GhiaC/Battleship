@@ -35,7 +35,6 @@ public class Game {
     public static void pointClicked(int i, int j) {
         System.out.println(turn + "   " + readyCounter);
         if (turn == 0 && readyCounter == 2) {
-            System.out.println("DS");
             sendAttackPoint(i, j);
             attackAt(i, j);
         }
@@ -52,6 +51,13 @@ public class Game {
             flag = true;
         }
         field[1 - turn].setFiredAt(i, j);
+        if(field[1-turn].getShipFired() > 0)
+        {
+            //TODO
+            mainFrame.setShipFired(field[1-turn].getShipFired()/2+1,1-turn);
+            field[1-turn].setShipFired();
+
+        }
         printField(flag);
         if (flag) {
             turn = 1 - turn;

@@ -59,6 +59,10 @@ public class GamePanel extends JPanel {
         }
     }
 
+    public void removeAllShip()
+    {
+        myShips.clear();
+    }
     private void initialImage(int width, int height) {
         for (int i = 0; i < 40; i++) {
             BufferedImage img = null;

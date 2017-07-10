@@ -278,6 +278,7 @@ public class StatusPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 gamePanel.resetPanel();
+                gamePanel.removeAllShip();
                 for(int i=1;i<=4;i++)
                    numberOfShips[i] = 4 - i + 1;
                 showNumberOfShips();

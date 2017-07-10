@@ -27,5 +27,10 @@ public class MainFrame extends JFrame{
     {
         mainPanel.printField(playerField);
     }
+    public void setShipFired(int size,int type)
+    {
+        mainPanel.setShipFired(size,type);
+
+    }
 
 }
