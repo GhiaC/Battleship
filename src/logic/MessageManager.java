@@ -4,6 +4,8 @@ import logic.Message.*;
 import tools.ChatHandler;
 import tools.Game;
 import veiw.ChatPanel;
+import veiw.GuestWaitingFrame;
+import veiw.WaitingForConnectionFrame;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -14,16 +16,20 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     private ServerSocketHandler mServerSocketHandler;
     private List<NetworkHandler> mNetworkHandlerList = new ArrayList<>();
     private int enemyNum = 0;
-
+    private WaitingForConnectionFrame waitingForConnectionFrame;
+    private String name;
+    private GuestWaitingFrame guestWaitingFrame;
     /**
      * Instantiate server socket handler and start it. (Call this constructor in host mode)
      */
-    public MessageManager(int port) {
+    public MessageManager(int port,String name) {
         mServerSocketHandler = new ServerSocketHandler(port, this, this);
         mServerSocketHandler.start();
+        waitingForConnectionFrame = new WaitingForConnectionFrame();
+        this.name = name;
     }
 
-    public MessageManager(String ip, int port) {
+    public MessageManager(String ip, int port,String name) {
         Socket socket = null;
         try {
             socket = new Socket(ip, port); //server's ip and port
@@ -33,6 +39,9 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         if (socket != null) {
             NetworkHandler networkHandler = new NetworkHandler(socket, this);
             mNetworkHandlerList.add(networkHandler);
+            sendRequestLogin(name);
+            guestWaitingFrame = new GuestWaitingFrame();
+
         }
     }
 
@@ -58,10 +67,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
         mNetworkHandlerList.get(enemyNum).sendMessage(requestLoginMessage);
     }
 
-    public void Ready() {
-        ReadyMessage readyMessage = new ReadyMessage();
-        mNetworkHandlerList.get(enemyNum).sendMessage(readyMessage);
-    }
 
     public void sendTurn() {
         TurnMessage turnMessage = new TurnMessage();
@@ -86,6 +91,14 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
                 }
             }
         }
+        sendTurn();
+        Game.openMainFrame();
+        waitingForConnectionFrame.setVisible(false);
+    }
+    public void Reject(int Num) {
+        AcceptRejectMessage RejectMessage = new AcceptRejectMessage(false);
+        mNetworkHandlerList.get(Num).sendMessage(RejectMessage);
+        mNetworkHandlerList.get(Num).stopSelf();
     }
 
     public void isTyping(boolean isTyping) {
@@ -96,7 +109,7 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     public void sendField(boolean[][] Field) {
         FieldMessage fieldMessage = new FieldMessage(Field);
         mNetworkHandlerList.get(enemyNum).sendMessage(fieldMessage);
-        sendMessage("Enemy","<span style='color:green'>I'm Ready</span>");
+        sendMessage("Enemy", "<span style='color:green'>I'm Ready</span>");
     }
 
     /**
@@ -105,7 +118,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     @Override
     public void onNewConnectionReceived(NetworkHandler networkHandler) {
         mNetworkHandlerList.add(networkHandler);
-        sendTurn();
     }
 
     @Override
@@ -117,7 +129,8 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
     public void onMessageReceived(BaseMessage baseMessage) {
         switch (baseMessage.getMessageType()) {
             case MessageTypes.REQUEST_LOGIN:
-                //TODO
+                String ip = mNetworkHandlerList.get(mNetworkHandlerList.size()-1).getIP();
+                waitingForConnectionFrame.addNewConnection(ip,((RequestLoginMessage)baseMessage).getmUsername());
                 break;
             case MessageTypes.ATTACK:
                 Game.attackAt(((AttackMessage) baseMessage).getX(), ((AttackMessage) baseMessage).getY());
@@ -128,15 +141,21 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
                 chatHandler.writeMessage(((ChatMessage) baseMessage).getName(), ((ChatMessage) baseMessage).getTextChat());
                 break;
             case MessageTypes.ACCEPT:
-                //MainFrame mainFrame = new MainFrame();
+                Game.openMainFrame();
+                guestWaitingFrame.setVisible(false);
                 //TODO
                 break;
             case MessageTypes.REJECT:
-                //TODO
+                try {
+//                    closeConnection();
+                }catch (Exception e){
+                    System.out.println("error in messagemanager line 151");
+                }
+                guestWaitingFrame.setVisible(false);
+                System.exit(0);
                 break;
             case MessageTypes.FieldMessage:
                 Game.setOneField(((FieldMessage) baseMessage).getPlayerField(), 1);
-                //TODO
                 break;
             case MessageTypes.READY:
                 //TODO
@@ -147,7 +166,6 @@ public class MessageManager implements IServerHandlerCallback, INetworkHandlerCa
                     turn = 1;
                 }
                 Game.setTurn(turn);
-                //TODO
                 break;
             case MessageTypes.isTyping:
                 ChatPanel.isTypingLanel.setText("is Typing ...");

@@ -14,7 +14,6 @@ public class NetworkHandler extends Thread {
     protected INetworkHandlerCallback iNetworkHandlerCallback;
     private boolean stop = false;
 
-    //k
 //    public NetworkHandler(SocketAddress socketAddress,INetworkHandlerCallback iNetworkHandlerCallback){
 //
 //    }
@@ -44,6 +43,9 @@ public class NetworkHandler extends Thread {
         }
     }
 
+    public String getIP(){
+        return mTcpChannel.getIP();
+    }
     private int sizeOfMessage() {
         return ByteBuffer.wrap(mTcpChannel.read(4)).getInt();
     }

@@ -27,7 +27,6 @@ public class WaitingForConnectionFrame extends JFrame {
         showConnectionPanel = new ShowConnectionPanel();
         add(showConnectionPanel);
 
-
         scrollPane = new JScrollPane(showConnectionPanel);
         scrollPane.setLocation(0, 50);
         scrollPane.setSize(300, 550);
@@ -39,9 +38,7 @@ public class WaitingForConnectionFrame extends JFrame {
     public void addNewConnection(String IP, String name)
     {
         showConnectionPanel.addNewConnection(IP,name);
-    }
-
-    public static void main(String[] args) {
-        WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
+        revalidate();
+        repaint();
     }
 }

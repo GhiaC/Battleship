@@ -39,12 +39,23 @@ public class NewConnectionPanel extends JPanel {
     private void addButtons()
     {
         acceptButton = new JButton("Accept");
+        acceptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MessageManagerHandler.Accept(index);
+            }
+        });
         add(acceptButton);
         acceptButton.setSize(100,50);
         acceptButton.setLocation(200,100);
         JButton rejectButton = new JButton("Reject");
         add(rejectButton);
-        rejectButton.setSize(100,50);
+        rejectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MessageManagerHandler.Reject(index);
+            }
+        });rejectButton.setSize(100,50);
         rejectButton.setLocation(100,100);
     }
     private void setAcceptButtonListener()

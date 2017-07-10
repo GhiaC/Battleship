@@ -28,6 +28,9 @@ public class TcpChannel {
         }
     }
 
+    public String getIP(){
+        return mSocket.getLocalAddress().toString();
+    }
     /**
      * Try to read specific count from input stream
      */

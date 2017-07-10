@@ -1,8 +1,6 @@
 package tools;
 
-import veiw.MainFrame;
-import veiw.PlayerField;
-import veiw.StatusPanel;
+import veiw.*;
 
 /**
  * Created by mohsen on 7/8/17.
@@ -12,19 +10,23 @@ public class Game {
     private static MainFrame mainFrame;
     private static int turn = 0;
     private static int readyCounter = 0;
-
+    private static boolean flag =false;
     public Game() {
 
     }
 
     public static void openMainFrame() {
-        mainFrame = new MainFrame();
+        System.out.println("222222");
+        if(!flag){
+            mainFrame = new MainFrame();
+            flag = true;
+        }
     }
 
     public static void setOneField(PlayerField field, int ind) {
         Game.field[ind] = field;
         readyCounter++;
-        if(ind == 0)
+        if (ind == 0)
             Game.field[ind].setPlayerType(false);
         else
             Game.field[ind].setPlayerType(true);
@@ -33,7 +35,6 @@ public class Game {
     }
 
     public static void pointClicked(int i, int j) {
-        System.out.println(turn + "   " + readyCounter);
         if (turn == 0 && readyCounter == 2) {
             sendAttackPoint(i, j);
             attackAt(i, j);
@@ -51,11 +52,10 @@ public class Game {
             flag = true;
         }
         field[1 - turn].setFiredAt(i, j);
-        if(field[1-turn].getShipFired() > 0)
-        {
+        if (field[1 - turn].getShipFired() > 0) {
             //TODO
-            mainFrame.setShipFired(field[1-turn].getShipFired()/2+1,1-turn);
-            field[1-turn].setShipFired();
+            mainFrame.setShipFired(field[1 - turn].getShipFired() / 2 + 1, 1 - turn);
+            field[1 - turn].setShipFired();
 
         }
         printField(flag);
@@ -68,11 +68,11 @@ public class Game {
         class printFieldThread extends Thread {
             public void run() {
                 try {
-                    if(flag) {
+                    if (flag) {
                         mainFrame.printField(field[turn]);
                         Thread.sleep(2000);
-                        mainFrame.printField(field[1-turn]);
-                    }else{
+                        mainFrame.printField(field[1 - turn]);
+                    } else {
                         mainFrame.printField(field[1 - turn]);
                     }
                 } catch (InterruptedException e) {

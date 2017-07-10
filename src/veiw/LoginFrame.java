@@ -1,7 +1,6 @@
 package veiw;
 
 import logic.MessageManager;
-import tools.Game;
 import tools.MessageManagerHandler;
 
 import javax.swing.*;
@@ -153,13 +152,10 @@ public class LoginFrame extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 MessageManagerHandler.setUsername(nameField.getText());
                 if(guestButton.isSelected()){
-                   // GuestWaitingFrame guestWaitingFrame = new GuestWaitingFrame();
-                    new MessageManagerHandler(new MessageManager(IPField.getText(),Integer.parseInt(guestPortField.getText())));
+                    new MessageManagerHandler(new MessageManager(IPField.getText(),Integer.parseInt(guestPortField.getText()),nameField.getText()));
                 }else{
-                   // WaitingForConnectionFrame waitingForConnectionFrame = new WaitingForConnectionFrame();
-                    new MessageManagerHandler(new MessageManager(Integer.parseInt(portField.getText())));
+                    new MessageManagerHandler(new MessageManager(Integer.parseInt(portField.getText()),nameField.getText()));
                 }
-                Game.openMainFrame();
                 setVisible(false);
             }
         });
