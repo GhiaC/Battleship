@@ -1,5 +1,7 @@
 package veiw;
 
+import tools.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,6 +22,8 @@ public class InGameStatusPanel extends JPanel {
 
     private int[] myShipCounter;
     private int[] enemyShipCounter;
+    private int numberOfMyship;
+    private int numberOfEnemyShip;
     public InGameStatusPanel()
     {
         setLocation(0,550);
@@ -29,6 +33,8 @@ public class InGameStatusPanel extends JPanel {
         myNameLabel = new JLabel("You");
         myNameLabel.setLocation(10,0);
         myNameLabel.setSize(50,30);
+        numberOfMyship = 10;
+        numberOfEnemyShip = 10;
         add(myNameLabel);
 
 
@@ -176,39 +182,86 @@ public class InGameStatusPanel extends JPanel {
     {
         myShip4[myShipCounter[4]].setBackground(Color.RED);
         myShipCounter[4]++;
+          numberOfMyship--;
+        if(numberOfMyship == 0)
+            showLose();
     }
     private void removeMyShip3()
     {
         myShip3[myShipCounter[3]].setBackground(Color.RED);
         myShipCounter[3]++;
+          numberOfMyship--;
+        if(numberOfMyship == 0)
+            showLose();
     }
     private void removeMyShip2()
     {
         myShip2[myShipCounter[2]].setBackground(Color.RED);
         myShipCounter[2]++;
+          numberOfMyship--;
+        if(numberOfMyship == 0)
+            showLose();
     }private void removeMyShip1()
     {
         myShip1[myShipCounter[1]].setBackground(Color.RED);
         myShipCounter[1]++;
+        numberOfMyship--;
+        if(numberOfMyship == 0)
+            showLose();
     }
     private void removeEnemyShip4()
     {
         enemyShip4[enemyShipCounter[4]].setBackground(Color.RED);
         enemyShipCounter[4]++;
+        numberOfEnemyShip--;
+        if(numberOfEnemyShip == 0)
+            showWin();
     }
     private void removeEnemyShip3()
     {
         enemyShip3[enemyShipCounter[3]].setBackground(Color.RED);
         enemyShipCounter[3]++;
+        numberOfEnemyShip--;
+        if(numberOfEnemyShip == 0)
+            showWin();
     }
     private void removeEnemyShip2()
     {
         enemyShip2[enemyShipCounter[2]].setBackground(Color.RED);
         enemyShipCounter[2]++;
+        numberOfEnemyShip--;
+        if(numberOfEnemyShip == 0)
+            showWin();
     }
     private void removeEnemyShip1()
     {
         enemyShip1[enemyShipCounter[1]].setBackground(Color.RED);
         enemyShipCounter[1]++;
+        numberOfEnemyShip--;
+        if(numberOfEnemyShip == 0)
+            showWin();
+    }
+    private void showMessage(String text)
+    {
+        JFrame frame = new JFrame();
+        frame.setLocation(600,500);
+        frame.setSize(300,200);
+        frame.setLayout(null);
+        JLabel textLabel = new JLabel(text);
+        textLabel.setSize(200,200);
+        textLabel.setLocation(75,0);
+        frame.add(textLabel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.setVisible(true);
+        //Game.closeMainFrame();
+    }
+    private void showWin()
+    {
+        showMessage("You win the game!");
+    }
+    private void showLose()
+    {
+        showMessage("You lose the game!");
     }
 }

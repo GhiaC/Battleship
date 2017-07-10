@@ -56,7 +56,6 @@ public class Game {
             //TODO
             mainFrame.setShipFired(field[1 - turn].getShipFired() / 2 + 1, 1 - turn);
             field[1 - turn].setShipFired();
-
         }
         printField(flag);
         if (flag) {
@@ -87,6 +86,11 @@ public class Game {
 
     public static void sendAttackPoint(int i, int j) {
         MessageManagerHandler.sendPointAttack(i, j);
+    }
+
+    public static void closeMainFrame()
+    {
+        mainFrame.dispose();
     }
 
 

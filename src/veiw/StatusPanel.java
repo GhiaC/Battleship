@@ -297,7 +297,7 @@ public class StatusPanel extends JPanel {
         readyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(!allShipPutted()) {
+                if(allShipPutted()) {
                     gameMod = !gameMod;
                     mainPanel.openInGameStatusPanel();
                     Game.setOneField(gamePanel.getMyField(),0);
