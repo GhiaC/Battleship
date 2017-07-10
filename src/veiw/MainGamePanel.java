@@ -11,8 +11,10 @@ import java.awt.*;
 public class MainGamePanel extends JPanel {
     private GameViewerPanel gamePanel;
     private MenuBar menuBar;
+    JLabel myTurnLabel;
+    JLabel enemyTurnLabel;
     public MainGamePanel() {
-     //   setBackground(Color.BLUE);
+        //setBackground(Color.BLUE);
         setLayout(null);
         gamePanel = new GameViewerPanel();
         add(gamePanel);
@@ -21,9 +23,36 @@ public class MainGamePanel extends JPanel {
         setBorder(new LineBorder(Color.BLACK,1));
         setSize(700,550);
         setLocation(0,0);
+        myTurnLabel = new JLabel("Your turn");
+        enemyTurnLabel = new JLabel("Enemy turn");
+
+        myTurnLabel.setSize(200,50);
+        myTurnLabel.setLocation(15,0);
+        add(myTurnLabel);
+        myTurnLabel.setVisible(false);
+        enemyTurnLabel.setSize(200,50);
+        enemyTurnLabel.setLocation(15,0);
+        add(enemyTurnLabel);
+        enemyTurnLabel.setVisible(false);
+
     }
     public void printField(PlayerField playerField)
     {
+        revalidate();
+        repaint();
+        if(playerField.getPlayerType()) {
+
+            myTurnLabel.setVisible(true);
+            enemyTurnLabel.setVisible(false);
+        }
+        else {
+            myTurnLabel.setVisible(false);
+            enemyTurnLabel.setVisible(true);
+
+        }
+
+        revalidate();
+        repaint();
         gamePanel.printField(playerField);
     }
     public GamePanel getGamePanel()
