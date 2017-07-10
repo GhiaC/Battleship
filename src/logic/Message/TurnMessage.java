@@ -10,8 +10,13 @@ public class TurnMessage extends BaseMessage {
     private byte messageType;
     private byte turn;
 
-    public TurnMessage(byte turn) {
-        this.turn = turn;
+    public TurnMessage() {
+        Random rand = new Random();
+        if(rand.nextBoolean()){
+            this.turn=MessageTypes.TURNServer;
+        }else {
+            this.turn=MessageTypes.TURNClient;
+        }
         serialize();
     }
 
@@ -27,7 +32,7 @@ public class TurnMessage extends BaseMessage {
         byteBuffer.putInt(messageLength);
         byteBuffer.put(MessageTypes.PROTOCOL_VERISON);
         byteBuffer.put(MessageTypes.TURN);
-        byteBuffer.put(MessageTypes.TURNServer);
+        byteBuffer.put(this.turn);
         mSerialized = byteBuffer.array();
     }
 

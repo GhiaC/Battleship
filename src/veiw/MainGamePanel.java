@@ -18,8 +18,7 @@ public class MainGamePanel extends JPanel {
         add(gamePanel);
         menuBar = new MenuBar();
         add(menuBar);
-        setBorder(new LineBorder(Color.BLACK,1) {
-        });
+        setBorder(new LineBorder(Color.BLACK,1));
         setSize(700,550);
         setLocation(0,0);
     }
