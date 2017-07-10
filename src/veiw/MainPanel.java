@@ -39,4 +39,11 @@ public class MainPanel extends JPanel{
     {
         mainGamePanel.printField(playerField);
     }
+    public void setShipFired(int size,int type)
+    {
+        if(type == 1)
+            inGameStatusPanel.removeEnemyShip(size);
+        else
+            inGameStatusPanel.removeMyShip(size);
+    }
 }
