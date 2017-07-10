@@ -13,7 +13,6 @@ public class ShowConnectionPanel extends JPanel {
     public ShowConnectionPanel()
     {
        setLocation(0,50);
-       setBackground(Color.BLACK);
        setPreferredSize(new Dimension(300,2000));
        setLayout(null);
     }

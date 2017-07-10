@@ -1,8 +1,12 @@
 package veiw;
 
+import tools.MessageManagerHandler;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by mohsen on 7/10/17.
@@ -19,6 +23,7 @@ public class NewConnectionPanel extends JPanel {
         setBorder(new LineBorder(Color.BLACK, 1));
         addNameIP(IP, name);
         addButtons();
+        setAcceptButtonListener();
     }
     private void addNameIP(String IP,String name)
     {
@@ -33,7 +38,7 @@ public class NewConnectionPanel extends JPanel {
     }
     private void addButtons()
     {
-        JButton acceptButton = new JButton("Accept");
+        acceptButton = new JButton("Accept");
         add(acceptButton);
         acceptButton.setSize(100,50);
         acceptButton.setLocation(200,100);
@@ -44,6 +49,12 @@ public class NewConnectionPanel extends JPanel {
     }
     private void setAcceptButtonListener()
     {
+        acceptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                MessageManagerHandler.Accept(index);
+            }
+        });
     }
 }
 

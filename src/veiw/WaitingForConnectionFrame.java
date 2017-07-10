@@ -34,18 +34,11 @@ public class WaitingForConnectionFrame extends JFrame {
 
         add(scrollPane);
         revalidate();
-
-
-        showConnectionPanel.addNewConnection("hossein", "ali");
-        showConnectionPanel.addNewConnection("hossein", "ali");
-        showConnectionPanel.addNewConnection("hossein", "ali");
-        showConnectionPanel.addNewConnection("hossein", "ali");
-        showConnectionPanel.addNewConnection("hossein", "ali");
-        showConnectionPanel.addNewConnection("hossein", "ali");
-        showConnectionPanel.addNewConnection("hossein", "ali");
-        revalidate();
-
         setVisible(true);
+    }
+    public void addNewConnection(String IP, String name)
+    {
+        showConnectionPanel.addNewConnection(IP,name);
     }
 
     public static void main(String[] args) {
