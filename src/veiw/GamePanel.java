@@ -29,7 +29,7 @@ public class GamePanel extends JPanel {
     ImageIcon redIcon = new ImageIcon(folder+"red.png");
     ImageIcon fire = new ImageIcon(folder+"fire.gif");
     ImageIcon greenIcon = new ImageIcon(folder+"green.png");
-    ImageIcon[] tempIcon = new ImageIcon[41];
+    ImageIcon[] tempIcon = new ImageIcon[42];
     private boolean imageInitial = false;
 
     public GamePanel() {
@@ -78,7 +78,7 @@ public class GamePanel extends JPanel {
             BufferedImage img = null;
             img = ImageIO.read(new File(folder+"green.jpg"));
             Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            tempIcon[40] = new ImageIcon(dimg);
+            tempIcon[41] = new ImageIcon(dimg);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,12 +86,14 @@ public class GamePanel extends JPanel {
     }
 
     private int getMode(int mode) {
-        if (mode == 100) {
-            return 40;
+        if (mode == 99) {
+            System.out.println(mode);
+            return 41;
         }
         int num = mode % 100;
         int dir = mode / 100;
         int result = num + dir * 10;
+
         return result;
     }
 
