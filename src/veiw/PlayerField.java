@@ -165,7 +165,7 @@ public class PlayerField {
     }
 
     public void setShipAt(int i, int j) {
-        ships[i][j] = 100;
+        ships[i][j] = 99;
     }
 
     private boolean inBound(int i, int j) {
