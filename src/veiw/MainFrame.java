@@ -17,7 +17,7 @@ public class MainFrame extends JFrame{
         mainPanel = new MainPanel();
         add(mainPanel);
 
-
+//        setUndecorated(true);
         menuBar = new MenuBar();
         //add(menuBar);
         setJMenuBar(menuBar);
