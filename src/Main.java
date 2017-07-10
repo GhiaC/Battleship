@@ -1,4 +1,3 @@
-import tools.Game;
 import veiw.LoginFrame;
 
 public class Main {

@@ -42,7 +42,7 @@ public class ChatPanel extends JPanel{
         new rePaint(this);
     }
     public void createNameLabel(String s) {
-        nameLabel = new JLabel("chat to " + s);
+        nameLabel = new JLabel("Chat ");
         nameLabel.setSize(130,45);
         nameLabel.setLocation(20,5);
         nameLabel.setOpaque(true);

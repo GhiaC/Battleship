@@ -4,6 +4,7 @@ import logic.MessageManager;
 import tools.Game;
 import tools.MessageManagerHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -12,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * Created by mohsen on 7/5/17.
@@ -72,10 +75,19 @@ public class StatusPanel extends JPanel {
     }
     private void makeUndoButton()
     {
-        undoButton = new JButton("undo");
-        undoButton.setSize(100,50);
-        undoButton.setLocation(580,0);
-        add(undoButton);
+        try {
+            undoButton = new JButton("");
+            BufferedImage img = null;
+            img = ImageIO.read(new File( "undo.png"));
+            Image dimg = img.getScaledInstance(50,50, Image.SCALE_SMOOTH);
+            ImageIcon imageIcon = new ImageIcon(dimg);
+            undoButton.setIcon(imageIcon);
+            undoButton.setSize(50, 50);
+            undoButton.setLocation(580, 0);
+            add(undoButton);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
     private void setUndoButtonActionListener()
     {
