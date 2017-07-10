@@ -16,7 +16,6 @@ public class Game {
     }
 
     public static void openMainFrame() {
-        System.out.println("222222");
         if(!flag){
             mainFrame = new MainFrame();
             flag = true;

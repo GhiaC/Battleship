@@ -89,10 +89,14 @@ public class NetworkHandler extends Thread {
      * Try to read some bytes from the channel.
      */
     public byte[] readChannel() {
-        if (!stop) {
-            int size = sizeOfMessage();
-            byte[] bytes = mTcpChannel.read(size - 4);
-            return bytes;
+        try {
+            if (!stop) {
+                int size = sizeOfMessage();
+                byte[] bytes = mTcpChannel.read(size - 4);
+                return bytes;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
         return null;
     }
